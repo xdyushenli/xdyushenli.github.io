@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="翻译计划,">
+  <meta name="keywords" content="LeetCode,js,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="我使用React到现在已经有好几年了，并且最近一些经常出现的模式引起了我的注意。在这篇文章中，我会回顾这些在日常工作中常用的React模式。作为例程，我将会创建一个从 常用React模式在日常工作中，每天写的组件常常都是纯渲染组件或带一些逻辑的组件。因此这引出了第一种模式，也是最简单的模式： ### 原文链接(React设计模式)[https://lucasmreis.github.io/blog">
-<meta name="keywords" content="翻译计划">
+<meta name="description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 代码编写12345678910">
+<meta name="keywords" content="LeetCode,js">
 <meta property="og:type" content="article">
-<meta property="og:title" content="翻译计划-React设计模式初探">
-<meta property="og:url" content="http://yoursite.com/2019/08/02/react-pattern/index.html">
+<meta property="og:title" content="js中的数字">
+<meta property="og:url" content="http://yoursite.com/2019/09/11/js-number/index.html">
 <meta property="og:site_name" content="敝舍">
-<meta property="og:description" content="我使用React到现在已经有好几年了，并且最近一些经常出现的模式引起了我的注意。在这篇文章中，我会回顾这些在日常工作中常用的React模式。作为例程，我将会创建一个从 常用React模式在日常工作中，每天写的组件常常都是纯渲染组件或带一些逻辑的组件。因此这引出了第一种模式，也是最简单的模式： ### 原文链接(React设计模式)[https://lucasmreis.github.io/blog">
+<meta property="og:description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 代码编写12345678910">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-14T23:51:30.000Z">
+<meta property="og:updated_time" content="2019-09-12T11:29:33.727Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="翻译计划-React设计模式初探">
-<meta name="twitter:description" content="我使用React到现在已经有好几年了，并且最近一些经常出现的模式引起了我的注意。在这篇文章中，我会回顾这些在日常工作中常用的React模式。作为例程，我将会创建一个从 常用React模式在日常工作中，每天写的组件常常都是纯渲染组件或带一些逻辑的组件。因此这引出了第一种模式，也是最简单的模式： ### 原文链接(React设计模式)[https://lucasmreis.github.io/blog">
+<meta name="twitter:title" content="js中的数字">
+<meta name="twitter:description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 代码编写12345678910">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/08/02/react-pattern/">
+  <link rel="canonical" href="http://yoursite.com/2019/09/11/js-number/">
 
 
 
 
 
-  <title>翻译计划-React设计模式初探 | 敝舍</title>
+  <title>js中的数字 | 敝舍</title>
   
 
 
@@ -233,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/02/react-pattern/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/11/js-number/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mett Li">
@@ -250,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">翻译计划-React设计模式初探</h1>
+          <h1 class="post-title" itemprop="name headline">js中的数字</h1>
         
 
         <div class="post-meta">
@@ -262,8 +262,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-02T15:13:32+08:00">
-                2019-08-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-11T16:10:31+08:00">
+                2019-09-11
               </time>
             
 
@@ -300,10 +300,11 @@
       
 
       
-        <p>我使用React到现在已经有好几年了，并且最近一些经常出现的模式引起了我的注意。在这篇文章中，我会回顾这些在日常工作中常用的React模式。<br>作为例程，我将会创建一个从</p>
-<h2 id="常用React模式"><a href="#常用React模式" class="headerlink" title="常用React模式"></a>常用React模式</h2><p>在日常工作中，每天写的组件常常都是纯渲染组件或带一些逻辑的组件。因此这引出了第一种模式，也是最简单的模式：</p>
-<p>###</p>
-<h3 id="原文链接"><a href="#原文链接" class="headerlink" title="原文链接"></a>原文链接</h3><p>(React设计模式)[<a href="https://lucasmreis.github.io/blog/simple-react-patterns/]" target="_blank" rel="noopener">https://lucasmreis.github.io/blog/simple-react-patterns/]</a></p>
+        <p>这篇文章是在刷LeetCode中第29题: <a href="https://leetcode-cn.com/problems/divide-two-integers/submissions/" target="_blank" rel="noopener">两数相除</a>时想到的。</p>
+<h2 id="js中的数字"><a href="#js中的数字" class="headerlink" title="js中的数字"></a>js中的数字</h2><p>js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。</p>
+<h2 id="题目思路"><a href="#题目思路" class="headerlink" title="题目思路"></a>题目思路</h2><p>由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。</p>
+<h2 id="代码编写"><a href="#代码编写" class="headerlink" title="代码编写"></a>代码编写</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;number&#125; dividend</span></span><br><span class="line"><span class="comment"> * @param &#123;number&#125; divisor</span></span><br><span class="line"><span class="comment"> * @return &#123;number&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> divide = <span class="function"><span class="keyword">function</span>(<span class="params">dividend, divisor</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(dividend === <span class="number">0</span> || divisor === <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> isPositive = !(dividend &lt; <span class="number">0</span> ^ divisor &lt; <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">let</span> ans = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    dividend = <span class="built_in">Math</span>.abs(dividend);</span><br><span class="line">    divisor = <span class="built_in">Math</span>.abs(divisor);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(dividend &gt;= divisor) &#123;</span><br><span class="line">        <span class="comment">// 重置除数</span></span><br><span class="line">        <span class="keyword">let</span> tempDivisor = divisor;</span><br><span class="line">        <span class="keyword">let</span> count = <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// js存放的都是32位有符号整数，因此最大二进制数只能是2147483648</span></span><br><span class="line">        <span class="comment">// 移位不仅可能导致上溢，还有可能导致下溢，所以要对tempDivisor进行界定</span></span><br><span class="line">        <span class="keyword">while</span>(dividend &gt;= tempDivisor &amp;&amp; tempDivisor &lt;= <span class="number">2147483648</span> &amp;&amp; tempDivisor &gt;= divisor) &#123;</span><br><span class="line">            dividend -= tempDivisor;</span><br><span class="line">            ans += count;</span><br><span class="line">            tempDivisor = tempDivisor &lt;&lt; <span class="number">1</span>;</span><br><span class="line">            count = count &lt;&lt; <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ans = isPositive ? ans : -ans;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(ans &gt; <span class="number">2147483647</span> || ans &lt; <span class="number">-2147483648</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2147483647</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ans;   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -321,7 +322,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/翻译计划/" rel="tag"># 翻译计划</a>
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/js/" rel="tag"># js</a>
           
         </div>
       
@@ -334,8 +337,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/27/prototype/" rel="next" title="JavaScript中的原型与继承">
-                <i class="fa fa-chevron-left"></i> JavaScript中的原型与继承
+              <a href="/2019/08/14/source/" rel="next" title="资源总结帖(持续更新)">
+                <i class="fa fa-chevron-left"></i> 资源总结帖(持续更新)
               </a>
             
           </div>
@@ -344,8 +347,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/08/03/interview-experence/" rel="prev" title="常见面试题及答案汇总">
-                常见面试题及答案汇总 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/09/12/first-100/" rel="prev" title="纪念一下">
+                纪念一下 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -469,7 +472,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用React模式"><span class="nav-number">1.</span> <span class="nav-text">常用React模式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原文链接"><span class="nav-number">1.1.</span> <span class="nav-text">原文链接</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#js中的数字"><span class="nav-number">1.</span> <span class="nav-text">js中的数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题目思路"><span class="nav-number">2.</span> <span class="nav-text">题目思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码编写"><span class="nav-number">3.</span> <span class="nav-text">代码编写</span></a></li></ol></div>
             
 
           </div>
