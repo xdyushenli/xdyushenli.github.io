@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="敝舍">
 <meta property="og:description" content="要着重关注的目录 events: react的事件绑定系统 react: react核心代码，定义节点及表现行为，不负责渲染或更新 react-dom: react-dom核心代码，负责渲染和更新 react-reconciler: react-dom重度依赖该模块(协调器) scheduler: 实现react异步渲染(调度表) shared: 公用代码  jsx到jsjsx代码经过babel转">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-11T10:19:36.327Z">
+<meta property="og:updated_time" content="2019-10-11T10:26:18.332Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="react源码阅读日记（一）">
 <meta name="twitter:description" content="要着重关注的目录 events: react的事件绑定系统 react: react核心代码，定义节点及表现行为，不负责渲染或更新 react-dom: react-dom核心代码，负责渲染和更新 react-reconciler: react-dom重度依赖该模块(协调器) scheduler: 实现react异步渲染(调度表) shared: 公用代码  jsx到jsjsx代码经过babel转">
@@ -398,7 +398,7 @@
 <li>React.Children.only：接受children数组作为唯一参数。验证children数组是否只有一个子节点，如果有则返回，否则抛出错误。</li>
 <li>React.Children.toArray：接受children数组作为唯一参数。按文档的说法，该方法会将children展开并返回，但我明没有看出有什么实际的作用。</li>
 </ul>
-<h2 id="React-Children-map源码解析"><a href="#React-Children-map源码解析" class="headerlink" title="React.Children.map源码解析"></a>React.Children.map源码解析</h2><p>在上述一系列方法中，最复杂的就map和forEach了，但二者除了返回值以外并没有什么不同。因此挑选map方法的源码进行解析。需要注意的是，传入map方法的回调函数，其返回值若为多维数组，则React会将其展开为一维数组后返回。<br>由于篇幅比较长，所以另写了一篇博文。详情见<a href>React.Children.map源码解析</a></p>
+<h2 id="React-Children-map源码解析"><a href="#React-Children-map源码解析" class="headerlink" title="React.Children.map源码解析"></a>React.Children.map源码解析</h2><p>在上述一系列方法中，最复杂的就map和forEach了，但二者除了返回值以外并没有什么不同。因此挑选map方法的源码进行解析。需要注意的是，传入map方法的回调函数，其返回值若为多维数组，则React会将其展开为一维数组后返回。<br>由于篇幅比较长，所以另写了一篇博文。详情见<a href="https://xdyushenli.github.io/2019/10/11/react-children-map/" target="_blank" rel="noopener">React.Children.map源码解析</a></p>
 <h1 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h1><h2 id="memo"><a href="#memo" class="headerlink" title="memo"></a>memo</h2><p>功能上与PureComponent类似，实现了在props不变的情况下不重新渲染，提高性能。<br>只适用于函数式组件，不适用与Class组件。</p>
 <h2 id="Fragment"><a href="#Fragment" class="headerlink" title="Fragment"></a>Fragment</h2><p>本质上是一个Symbol，常见的形态是<code>&lt;&gt;&lt;/&gt;</code>。</p>
 <h2 id="StrictMode"><a href="#StrictMode" class="headerlink" title="StrictMode"></a>StrictMode</h2><p>本质上是一个Symbol。在该模式下，使用快要过期的API时会提示。</p>
@@ -447,8 +447,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/09/22/flash-cards/" rel="prev" title="抽记卡网站搭建">
-                抽记卡网站搭建 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/10/10/fake-phychology/" rel="prev" title="《对伪心理学说不读后感》">
+                《对伪心理学说不读后感》 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -526,7 +526,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
