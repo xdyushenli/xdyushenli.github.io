@@ -79,17 +79,13 @@
 
 
 
-<meta name="description" content="uwsgi的app变量名必须为application否则会出现如下错误 1234from myproject import app as application if __name__ == &quot;__main__&quot;:    application.run()  1234567unable to load app 0 (mountpoint=&amp;apos;&amp;apos;) (callable not fo">
-<meta property="og:type" content="article">
-<meta property="og:title" content="抽记卡网站搭建">
-<meta property="og:url" content="http://yoursite.com/2019/09/22/flash-cards/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="敝舍">
+<meta property="og:url" content="http://yoursite.com/tags/心理学/index.html">
 <meta property="og:site_name" content="敝舍">
-<meta property="og:description" content="uwsgi的app变量名必须为application否则会出现如下错误 1234from myproject import app as application if __name__ == &quot;__main__&quot;:    application.run()  1234567unable to load app 0 (mountpoint=&amp;apos;&amp;apos;) (callable not fo">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-22T03:55:36.996Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="抽记卡网站搭建">
-<meta name="twitter:description" content="uwsgi的app变量名必须为application否则会出现如下错误 1234from myproject import app as application if __name__ == &quot;__main__&quot;:    application.run()  1234567unable to load app 0 (mountpoint=&amp;apos;&amp;apos;) (callable not fo">
+<meta name="twitter:title" content="敝舍">
 
 
 
@@ -119,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/09/22/flash-cards/">
+  <link rel="canonical" href="http://yoursite.com/tags/心理学/">
 
 
 
 
 
-  <title>抽记卡网站搭建 | 敝舍</title>
+  <title>标签: 心理学 | 敝舍</title>
   
 
 
@@ -144,7 +140,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -218,147 +214,52 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block tag">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>心理学<small>标签</small>
+        </h1>
+      </div>
 
-  
-  
-  
+      
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/22/flash-cards/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Mett Li">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="敝舍">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
-        
-          <h1 class="post-title" itemprop="name headline">抽记卡网站搭建</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
+            <a class="post-title-link" href="/2019/10/10/fake-phychology/" itemprop="url">
               
-                <span class="post-meta-item-text">发表于</span>
+                <span itemprop="name">《对伪心理学说不读后感》</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-22T11:51:37+08:00">
-                2019-09-22
-              </time>
-            
+            </a>
+        
+      </h2>
 
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated" datetime="2019-10-10T12:24:22+08:00" content="2019-10-10">
+          10-10
+        </time>
+      </div>
 
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="uwsgi的app变量名必须为application"><a href="#uwsgi的app变量名必须为application" class="headerlink" title="uwsgi的app变量名必须为application"></a>uwsgi的app变量名必须为application</h1><p>否则会出现如下错误</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> myproject <span class="keyword">import</span> app <span class="keyword">as</span> application</span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    application.run()</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">unable to load app 0 (mountpoint=&apos;&apos;) (callable not found or import error)</span><br><span class="line"></span><br><span class="line">*** no app loaded. going in full dynamic mode ***</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">--- no python application found, check your startup logs for errors ---</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/09/16/react-day-1/" rel="next" title="react源码阅读日记（一）">
-                <i class="fa fa-chevron-left"></i> react源码阅读日记（一）
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/10/09/ssr/" rel="prev" title="ssr">
-                ssr <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
 
 
           </div>
@@ -366,10 +267,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -390,17 +287,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -451,22 +339,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#uwsgi的app变量名必须为application"><span class="nav-number">1.</span> <span class="nav-text">uwsgi的app变量名必须为application</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -607,10 +479,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
