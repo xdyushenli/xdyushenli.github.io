@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="React,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简介React.Children提供了用于处理this.props.children不透明数据结构的实用方法。而React.Children.map是其中的一种。 1React.Children.map(children, function[(thisArg)])  在children里的每个直接子节点上调用一个函数，并将this设置为thisArg。如果children是一个数组，它将被遍历并为">
+<meta name="keywords" content="React">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React.Children.map源码解析">
+<meta property="og:url" content="http://yoursite.com/2019/10/11/react-children-map/index.html">
+<meta property="og:site_name" content="敝舍">
+<meta property="og:description" content="简介React.Children提供了用于处理this.props.children不透明数据结构的实用方法。而React.Children.map是其中的一种。 1React.Children.map(children, function[(thisArg)])  在children里的每个直接子节点上调用一个函数，并将this设置为thisArg。如果children是一个数组，它将被遍历并为">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/react-children-map/01.jpg">
+<meta property="og:updated_time" content="2019-10-21T12:05:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React.Children.map源码解析">
+<meta name="twitter:description" content="简介React.Children提供了用于处理this.props.children不透明数据结构的实用方法。而React.Children.map是其中的一种。 1React.Children.map(children, function[(thisArg)])  在children里的每个直接子节点上调用一个函数，并将this设置为thisArg。如果children是一个数组，它将被遍历并为">
+<meta name="twitter:image" content="http://yoursite.com/images/react-children-map/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/11/react-children-map/">
+
+
+
+
+
+  <title>React.Children.map源码解析 | 敝舍</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">敝舍</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/11/react-children-map/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mett Li">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="敝舍">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">React.Children.map源码解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-11T18:21:10+08:00">
+                2019-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><code>React.Children</code>提供了用于处理<code>this.props.children</code>不透明数据结构的实用方法。而<code>React.Children.map</code>是其中的一种。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">React.Children.map(children, function[(thisArg)])</span><br></pre></td></tr></table></figure>
+
+<p>在<code>children</code>里的每个直接子节点上调用一个函数，并将<code>this</code>设置为<code>thisArg</code>。<br>如果<code>children</code>是一个数组，它将被遍历并为数组中的每个子节点调用该函数。<br>如果子节点为<code>null</code>或是<code>undefined</code>，则此方法将返回<code>null</code>或是<code>undefined</code>，而不会返回数组。<br>值得注意的是，若<code>function</code>的返回值是一个多维数组，那么<code>React.Children.map</code>的返回值是一个将多维数组展开形成的一维数组。</p>
+<h1 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h1><p><img src="/images/react-children-map/01.jpg" alt></p>
+<h1 id="主要函数解析"><a href="#主要函数解析" class="headerlink" title="主要函数解析"></a>主要函数解析</h1><p>主要的函数有五个，按照执行的先后顺序分别是<code>mapIntoWithKeyPrefixInternal</code>，<code>getPooledTraverseContext</code>，<code>traverseAllChildrenImpl</code>、<code>mapSingleChildIntoContext</code>和<code>releaseTraverseContext</code>。</p>
+<h2 id="mapIntoWithKeyPrefixInternal"><a href="#mapIntoWithKeyPrefixInternal" class="headerlink" title="mapIntoWithKeyPrefixInternal"></a>mapIntoWithKeyPrefixInternal</h2><h3 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mapIntoWithKeyPrefixInternal</span>(<span class="params">children, array, prefix, func, context</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> escapedPrefix = <span class="string">''</span>;</span><br><span class="line">    <span class="keyword">if</span> (prefix != <span class="literal">null</span>) &#123;</span><br><span class="line">        escapedPrefix = escapeUserProvidedKey(prefix) + <span class="string">'/'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> traverseContext = getPooledTraverseContext(</span><br><span class="line">        array,</span><br><span class="line">        escapedPrefix,</span><br><span class="line">        func,</span><br><span class="line">        context,</span><br><span class="line">    );</span><br><span class="line">    traverseAllChildren(children, mapSingleChildIntoContext, traverseContext);</span><br><span class="line">    releaseTraverseContext(traverseContext);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="源码解析"><a href="#源码解析" class="headerlink" title="源码解析"></a>源码解析</h3><p>整个<code>mapIntoWithKeyPrefixInternal</code>实际上可以分为三步。</p>
+<ol>
+<li>调用<code>getPooledTraverseContext</code>，创建上下文对象。</li>
+<li>调用<code>traverseAllChildren</code>，执行遍历操作。</li>
+<li>调用<code>releaseTraverseContext</code>，将本次遍历用到的上下文对象保存入上下文池中。</li>
+</ol>
+<h2 id="getPooledTraverseContext"><a href="#getPooledTraverseContext" class="headerlink" title="getPooledTraverseContext"></a>getPooledTraverseContext</h2><h3 id="源代码-1"><a href="#源代码-1" class="headerlink" title="源代码"></a>源代码</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 上下文池的最大长度</span></span><br><span class="line"><span class="keyword">const</span> POOL_SIZE = <span class="number">10</span>;</span><br><span class="line"><span class="comment">// 上下文池</span></span><br><span class="line"><span class="keyword">const</span> traverseContextPool = [];</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPooledTraverseContext</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  mapResult,</span></span></span><br><span class="line"><span class="function"><span class="params">  keyPrefix,</span></span></span><br><span class="line"><span class="function"><span class="params">  mapFunction,</span></span></span><br><span class="line"><span class="function"><span class="params">  mapContext,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (traverseContextPool.length) &#123;</span><br><span class="line">    <span class="keyword">const</span> traverseContext = traverseContextPool.pop();</span><br><span class="line">    traverseContext.result = mapResult;</span><br><span class="line">    traverseContext.keyPrefix = keyPrefix;</span><br><span class="line">    traverseContext.func = mapFunction;</span><br><span class="line">    traverseContext.context = mapContext;</span><br><span class="line">    traverseContext.count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">return</span> traverseContext;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      result: mapResult,</span><br><span class="line">      keyPrefix: keyPrefix,</span><br><span class="line">      func: mapFunction,</span><br><span class="line">      context: mapContext,</span><br><span class="line">      count: <span class="number">0</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="源码解析-1"><a href="#源码解析-1" class="headerlink" title="源码解析"></a>源码解析</h3><h4 id="函数功能"><a href="#函数功能" class="headerlink" title="函数功能"></a>函数功能</h4><p>从这段代码中可以看出，<code>getPooledTraverseContext</code>所做的就是从<code>traverseContextPool</code>取出位于数组尾部的最后一个对象，并将对应参数赋值给对象中的对应属性。若上下文池中没有需要的对象，则创建一个新对象并返回。<br>该对象承载了许多内容，可以说是名副其实的上下文对象。在之后的各个函数中，基本都会把该对象作为参数传入其中。</p>
+<h4 id="上下文对象解析"><a href="#上下文对象解析" class="headerlink" title="上下文对象解析"></a>上下文对象解析</h4><ul>
+<li>mapResult：保存在<code>mapChildren</code>中创建的<code>result</code>对象的内存地址。</li>
+<li>keyPrefix：<code>key</code>属性前缀。</li>
+<li>mapFunction：<code>React.Children.map</code>传入的回调函数。</li>
+<li>mapContext：<code>React.Children.map</code>传入的上下文。</li>
+<li>count：执行回调函数后，<code>result</code>数组中元素的个数。</li>
+</ul>
+<h4 id="上下文池的作用"><a href="#上下文池的作用" class="headerlink" title="上下文池的作用"></a>上下文池的作用</h4><p>上下文池用于保存之前用过的上下文对象。之所以要采用这种保存对象的设计，是因为js引擎对于创建和销毁对象的开销都比较大，保存之前用过的对象可以在需要遍历的数组维度和长度都比较大时提升一定性能。</p>
+<h2 id="traverseAllChildrenImpl"><a href="#traverseAllChildrenImpl" class="headerlink" title="traverseAllChildrenImpl"></a>traverseAllChildrenImpl</h2><h3 id="源代码-2"><a href="#源代码-2" class="headerlink" title="源代码"></a>源代码</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;?*&#125; children Children tree container.</span></span><br><span class="line"><span class="comment"> * @param &#123;!string&#125; nameSoFar Name of the key path so far.</span></span><br><span class="line"><span class="comment"> * @param &#123;!function&#125; callback Callback to invoke with each child found.</span></span><br><span class="line"><span class="comment"> * @param &#123;?*&#125; traverseContext Used to pass information throughout the traversal</span></span><br><span class="line"><span class="comment"> * process.</span></span><br><span class="line"><span class="comment"> * @return &#123;!number&#125; The number of children in this subtree.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">traverseAllChildrenImpl</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    children,</span></span></span><br><span class="line"><span class="function"><span class="params">    nameSoFar,</span></span></span><br><span class="line"><span class="function"><span class="params">    callback,</span></span></span><br><span class="line"><span class="function"><span class="params">    traverseContext,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> type = <span class="keyword">typeof</span> children;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (type === <span class="string">'undefined'</span> || type === <span class="string">'boolean'</span>) &#123;</span><br><span class="line">        <span class="comment">// All of the above are perceived as null.</span></span><br><span class="line">        children = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> invokeCallback = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (children === <span class="literal">null</span>) &#123;</span><br><span class="line">        invokeCallback = <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'string'</span>:</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'number'</span>:</span><br><span class="line">                invokeCallback = <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'object'</span>:</span><br><span class="line">                <span class="keyword">switch</span> (children.$$<span class="keyword">typeof</span>) &#123;</span><br><span class="line">                    <span class="keyword">case</span> REACT_ELEMENT_TYPE:</span><br><span class="line">                    <span class="keyword">case</span> REACT_PORTAL_TYPE:</span><br><span class="line">                        invokeCallback = <span class="literal">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (invokeCallback) &#123;</span><br><span class="line">        callback(</span><br><span class="line">            traverseContext,</span><br><span class="line">            children,</span><br><span class="line">            <span class="comment">// If it's the only child, treat the name as if it was wrapped in an array</span></span><br><span class="line">            <span class="comment">// so that it's consistent if the number of children grows.</span></span><br><span class="line">            nameSoFar === <span class="string">''</span> ? SEPARATOR + getComponentKey(children, <span class="number">0</span>) : nameSoFar,</span><br><span class="line">        );</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> child;</span><br><span class="line">    <span class="keyword">let</span> nextName;</span><br><span class="line">    <span class="keyword">let</span> subtreeCount = <span class="number">0</span>; <span class="comment">// Count of children found in the current subtree.</span></span><br><span class="line">    <span class="keyword">const</span> nextNamePrefix =</span><br><span class="line">        nameSoFar === <span class="string">''</span> ? SEPARATOR : nameSoFar + SUBSEPARATOR;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(children)) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; children.length; i++) &#123;</span><br><span class="line">            child = children[i];</span><br><span class="line">            nextName = nextNamePrefix + getComponentKey(child, i);</span><br><span class="line">            subtreeCount += traverseAllChildrenImpl(</span><br><span class="line">                child,</span><br><span class="line">                nextName,</span><br><span class="line">                callback,</span><br><span class="line">                traverseContext,</span><br><span class="line">            );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> iteratorFn = getIteratorFn(children);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> iteratorFn === <span class="string">'function'</span>) &#123;</span><br><span class="line">            <span class="comment">// 具有遍历器接口的对象</span></span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">'object'</span>) &#123;</span><br><span class="line">            <span class="comment">// 错误提示</span></span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> subtreeCount;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="源码解析-2"><a href="#源码解析-2" class="headerlink" title="源码解析"></a>源码解析</h3><p>在该函数中，根据<code>children</code>的类型和<code>React.Children.map</code>传入的回调函数的执行结果进行了路径划分。<br>若<code>children</code>是数组，则会遍历该数组，递归调用<code>traverseAllChildrenImpl</code>函数，并将每个数组中的每个元素作为<code>children</code>参数传入其中。<br>若<code>children</code>是字符串、数字或组件，则会调用<code>mapSingleChildIntoContext</code>函数，并将<code>children</code>传入其中。</p>
+<h2 id="mapSingleChildIntoContext"><a href="#mapSingleChildIntoContext" class="headerlink" title="mapSingleChildIntoContext"></a>mapSingleChildIntoContext</h2><h3 id="源代码-3"><a href="#源代码-3" class="headerlink" title="源代码"></a>源代码</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mapSingleChildIntoContext</span>(<span class="params">bookKeeping, child, childKey</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> &#123; result, keyPrefix, func, context &#125; = bookKeeping;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 在child上调用React.Children.map传入的回调函数</span></span><br><span class="line">    <span class="keyword">let</span> mappedChild = func.call(context, child, bookKeeping.count++);</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">Array</span>.isArray(mappedChild)) &#123;</span><br><span class="line">        mapIntoWithKeyPrefixInternal(mappedChild, result, childKey, c =&gt; c);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (mappedChild != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (isValidElement(mappedChild)) &#123;</span><br><span class="line">            <span class="comment">// 克隆节点，并赋值为mappedChild</span></span><br><span class="line">            <span class="comment">// ...</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 将执行结果存入result数组</span></span><br><span class="line">        result.push(mappedChild);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="源码解析-3"><a href="#源码解析-3" class="headerlink" title="源码解析"></a>源码解析</h3><p>在<code>mapSingleChildIntoContext</code>中，终于执行了在一开始传入的回调函数。<br>若回调函数的执行结果是一个数组，则会递归调用<code>mapIntoWithKeyPrefixInternal</code>。值得注意的是，此时传入<code>mapIntoWithKeyPrefixInternal</code>的回调函数是<code>c =&gt; c</code>，即直接返回当前数组元素。<br>若回调函数执行结果不是数组，则将其放入<code>result</code>中保存。</p>
+<h2 id="releaseTraverseContext"><a href="#releaseTraverseContext" class="headerlink" title="releaseTraverseContext"></a>releaseTraverseContext</h2><h3 id="源代码-4"><a href="#源代码-4" class="headerlink" title="源代码"></a>源代码</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">releaseTraverseContext</span>(<span class="params">traverseContext</span>) </span>&#123;</span><br><span class="line">    traverseContext.result = <span class="literal">null</span>;</span><br><span class="line">    traverseContext.keyPrefix = <span class="literal">null</span>;</span><br><span class="line">    traverseContext.func = <span class="literal">null</span>;</span><br><span class="line">    traverseContext.context = <span class="literal">null</span>;</span><br><span class="line">    traverseContext.count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">if</span> (traverseContextPool.length &lt; POOL_SIZE) &#123;</span><br><span class="line">        traverseContextPool.push(traverseContext);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="源码解析-4"><a href="#源码解析-4" class="headerlink" title="源码解析"></a>源码解析</h3><p>在<code>releaseTraverseContext</code>中，重置了之前遍历用到的上下文对象，并将其保存到上下文池中。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在阅读<code>React.Children.map</code>源码的过程中，比较值得注意的是上下文池的设计。<br>由于在处理<code>children</code>数组时错综复杂的函数调用关系，因此需要有一个统一的对象用于保存执行的结果。从这个角度上来说，将其翻译为上下文还是挺合适的。而上下文池的设计，则是为了尽可能的复用之前遍历时已经产生的对象。上下文池中的每个对象，都是空白的上下文。js引擎创建对象和销毁对象的开销都很大，在数组长度和维数比较大时，这种做法能带来性能上的提升。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React/" rel="tag"># React</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/10/fake-phychology/" rel="next" title="《对伪心理学说不读后感》">
+                <i class="fa fa-chevron-left"></i> 《对伪心理学说不读后感》
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Mett Li</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#流程图"><span class="nav-number">2.</span> <span class="nav-text">流程图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主要函数解析"><span class="nav-number">3.</span> <span class="nav-text">主要函数解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mapIntoWithKeyPrefixInternal"><span class="nav-number">3.1.</span> <span class="nav-text">mapIntoWithKeyPrefixInternal</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#源代码"><span class="nav-number">3.1.1.</span> <span class="nav-text">源代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码解析"><span class="nav-number">3.1.2.</span> <span class="nav-text">源码解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getPooledTraverseContext"><span class="nav-number">3.2.</span> <span class="nav-text">getPooledTraverseContext</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#源代码-1"><span class="nav-number">3.2.1.</span> <span class="nav-text">源代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码解析-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">源码解析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数功能"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">函数功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上下文对象解析"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">上下文对象解析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上下文池的作用"><span class="nav-number">3.2.2.3.</span> <span class="nav-text">上下文池的作用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#traverseAllChildrenImpl"><span class="nav-number">3.3.</span> <span class="nav-text">traverseAllChildrenImpl</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#源代码-2"><span class="nav-number">3.3.1.</span> <span class="nav-text">源代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码解析-2"><span class="nav-number">3.3.2.</span> <span class="nav-text">源码解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mapSingleChildIntoContext"><span class="nav-number">3.4.</span> <span class="nav-text">mapSingleChildIntoContext</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#源代码-3"><span class="nav-number">3.4.1.</span> <span class="nav-text">源代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码解析-3"><span class="nav-number">3.4.2.</span> <span class="nav-text">源码解析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#releaseTraverseContext"><span class="nav-number">3.5.</span> <span class="nav-text">releaseTraverseContext</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#源代码-4"><span class="nav-number">3.5.1.</span> <span class="nav-text">源代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码解析-4"><span class="nav-number">3.5.2.</span> <span class="nav-text">源码解析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mett Li</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
