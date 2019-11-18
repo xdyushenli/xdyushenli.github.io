@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="react,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本章简介本章主要介绍React创建更新的过程, 但不涉及执行更新。在React中, 有三种创建更新的方式:   ReactDOM.render || hydrate setState forceUpdate咱们一个一个来看。  ReactDOM.render创建更新的步骤 创建ReactSyncRoot, 该对象是一个包含整个React应用的顶点对象。 创建FiberRoot和RootFiber。">
+<meta name="keywords" content="react">
+<meta property="og:type" content="article">
+<meta property="og:title" content="react源码阅读日记（二）">
+<meta property="og:url" content="http://yoursite.com/2019/10/11/react-day-2/index.html">
+<meta property="og:site_name" content="敝舍">
+<meta property="og:description" content="本章简介本章主要介绍React创建更新的过程, 但不涉及执行更新。在React中, 有三种创建更新的方式:   ReactDOM.render || hydrate setState forceUpdate咱们一个一个来看。  ReactDOM.render创建更新的步骤 创建ReactSyncRoot, 该对象是一个包含整个React应用的顶点对象。 创建FiberRoot和RootFiber。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-11-07T09:38:48.510Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="react源码阅读日记（二）">
+<meta name="twitter:description" content="本章简介本章主要介绍React创建更新的过程, 但不涉及执行更新。在React中, 有三种创建更新的方式:   ReactDOM.render || hydrate setState forceUpdate咱们一个一个来看。  ReactDOM.render创建更新的步骤 创建ReactSyncRoot, 该对象是一个包含整个React应用的顶点对象。 创建FiberRoot和RootFiber。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/10/11/react-day-2/">
+
+
+
+
+
+  <title>react源码阅读日记（二） | 敝舍</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">敝舍</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/11/react-day-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mett Li">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="敝舍">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">react源码阅读日记（二）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-11T19:11:43+08:00">
+                2019-10-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="本章简介"><a href="#本章简介" class="headerlink" title="本章简介"></a>本章简介</h1><p>本章主要介绍React创建更新的过程, 但不涉及执行更新。<br>在React中, 有三种创建更新的方式: </p>
+<ol>
+<li>ReactDOM.render || hydrate</li>
+<li>setState</li>
+<li>forceUpdate<br>咱们一个一个来看。</li>
+</ol>
+<h1 id="ReactDOM-render"><a href="#ReactDOM-render" class="headerlink" title="ReactDOM.render"></a>ReactDOM.render</h1><h2 id="创建更新的步骤"><a href="#创建更新的步骤" class="headerlink" title="创建更新的步骤"></a>创建更新的步骤</h2><ol>
+<li>创建ReactSyncRoot, 该对象是一个包含整个React应用的顶点对象。</li>
+<li>创建FiberRoot和RootFiber。</li>
+<li>创建更新请求, 接下来进入调度阶段, 由调度器（reconciler）进行接管。调度器负责任务调度以及调和与平台无关的节点。<h2 id="ReactDOM-render源码详解"><a href="#ReactDOM-render源码详解" class="headerlink" title="ReactDOM.render源码详解"></a>ReactDOM.render源码详解</h2>ReactDOM.render方法会直接调用并返回legacyRenderSubtreeIntoContainer方法。<br>legacyRenderSubtreeIntoContainer方法首先会进行一次判断, 判断当前传入的container是否已存在_reactRootContainer属性, 该属性是一个ReactSyncRoot对象, 包含了从container的所有子节点的信息。该方法的最终返回值是null或一个FiberRoot对象。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">legacyRenderSubtreeIntoContainer</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  parentComponent: ?React$Component&lt;any, any&gt;,</span></span></span><br><span class="line"><span class="function"><span class="params">  children: ReactNodeList,</span></span></span><br><span class="line"><span class="function"><span class="params">  container: DOMContainer,</span></span></span><br><span class="line"><span class="function"><span class="params">  forceHydrate: boolean,</span></span></span><br><span class="line"><span class="function"><span class="params">  callback: ?Function,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> root: _ReactSyncRoot = (container._reactRootContainer: any);</span><br><span class="line">  <span class="keyword">let</span> fiberRoot;</span><br><span class="line">  <span class="keyword">if</span> (!root) &#123;</span><br><span class="line">    <span class="comment">// 调用legacyCreateRootFromDOMContainer方法创建一ReactSyncRoot对象, 并将其挂载在container._reactRootContainer上</span></span><br><span class="line">    fiberRoot = root._internalRoot;</span><br><span class="line">    <span class="comment">// 判断callback是否为函数, 并做简单的封装</span></span><br><span class="line">    <span class="comment">// 获取ReactSyncRoot对象的_internalRoot属性</span></span><br><span class="line">    <span class="comment">// 调用unbatchedUpdates方法, 将updateContainer方法传入作为参数</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    fiberRoot = root._internalRoot;</span><br><span class="line">    <span class="comment">// 获取ReactSyncRoot对象的_internalRoot属性</span></span><br><span class="line">    <span class="comment">// 判断callback是否为函数, 并做简单的封装</span></span><br><span class="line">    <span class="comment">// 调用updateContainer方法</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> getPublicRootInstance(fiberRoot);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="什么是ReactSyncRoot对象"><a href="#什么是ReactSyncRoot对象" class="headerlink" title="什么是ReactSyncRoot对象?"></a>什么是ReactSyncRoot对象?</h3><p>ReactSyncRoot对象是一个包含整个React应用的顶点对象。<br>值得注意的是, 16.9.0版本的react源码中同时保留了ReactRoot对象和ReactSyncRoot对象。两个对象并没有太多不同的地方, 唯一的区别在于创建ReactSyncRoot对象时多传入了一个参数。在该版本的react中, 使用ReactDOM.render方法时, 最终创建的是ReactSyncRoot对象。由于二者基本等价, 因此在下面的文章中只介绍ReactSyncRoot对象。<br>ReactSyncRoot对象只有一个名为<code>_internalRoot</code>的属性, 在这个属性上挂载着调用<code>createContainer</code>方法的返回值, 该返回值是一个FiberRoot对象。</p>
+<h3 id="unbatchedUpdates-amp-updateContainer"><a href="#unbatchedUpdates-amp-updateContainer" class="headerlink" title="unbatchedUpdates &amp; updateContainer"></a>unbatchedUpdates &amp; updateContainer</h3><p>unbatchedUpdates方法会直接调用传入的函数, 也就是updateContainer方法。因此, 在这个流程中二者是基本等价的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// flow: type OpaqueRoot = FiberRoot</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">updateContainer</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  element: ReactNodeList,</span></span></span><br><span class="line"><span class="function"><span class="params">  container: OpaqueRoot,</span></span></span><br><span class="line"><span class="function"><span class="params">  parentComponent: ?React$Component&lt;any, any&gt;,</span></span></span><br><span class="line"><span class="function"><span class="params">  callback: ?Function,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>): <span class="title">ExpirationTime</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> current = container.current;</span><br><span class="line">    <span class="keyword">const</span> currentTime = requestCurrentTime();</span><br><span class="line">    <span class="keyword">const</span> suspenseConfig = requestCurrentSuspenseConfig();</span><br><span class="line">    <span class="comment">// 计算过期时间</span></span><br><span class="line">    <span class="keyword">const</span> expirationTime = computeExpirationForFiber(</span><br><span class="line">        currentTime,</span><br><span class="line">        current,</span><br><span class="line">        suspenseConfig,</span><br><span class="line">    );</span><br><span class="line">    <span class="keyword">return</span> updateContainerAtExpirationTime(</span><br><span class="line">        element,</span><br><span class="line">        container,</span><br><span class="line">        parentComponent,</span><br><span class="line">        expirationTime,</span><br><span class="line">        suspenseConfig,</span><br><span class="line">        callback,</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">updateContainerAtExpirationTime</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  element: ReactNodeList,</span></span></span><br><span class="line"><span class="function"><span class="params">  container: OpaqueRoot,</span></span></span><br><span class="line"><span class="function"><span class="params">  parentComponent: ?React$Component&lt;any, any&gt;,</span></span></span><br><span class="line"><span class="function"><span class="params">  expirationTime: ExpirationTime,</span></span></span><br><span class="line"><span class="function"><span class="params">  suspenseConfig: null | SuspenseConfig,</span></span></span><br><span class="line"><span class="function"><span class="params">  callback: ?Function,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> current = container.current;</span><br><span class="line">    <span class="comment">// 一般context都是null</span></span><br><span class="line">    <span class="keyword">const</span> context = getContextForSubtree(parentComponent);</span><br><span class="line">    <span class="keyword">if</span> (container.context === <span class="literal">null</span>) &#123;</span><br><span class="line">        container.context = context;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        container.pendingContext = context;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> scheduleRootUpdate(</span><br><span class="line">        current,</span><br><span class="line">        element,</span><br><span class="line">        expirationTime,</span><br><span class="line">        suspenseConfig,</span><br><span class="line">        callback,</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scheduleRootUpdate</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  current: Fiber,</span></span></span><br><span class="line"><span class="function"><span class="params">  element: ReactNodeList,</span></span></span><br><span class="line"><span class="function"><span class="params">  expirationTime: ExpirationTime,</span></span></span><br><span class="line"><span class="function"><span class="params">  suspenseConfig: null | SuspenseConfig,</span></span></span><br><span class="line"><span class="function"><span class="params">  callback: ?Function,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 创建代表更新请求的对象</span></span><br><span class="line">    <span class="keyword">const</span> update = createUpdate(expirationTime, suspenseConfig);</span><br><span class="line">    update.payload = &#123;element&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将更新请求放入更新队列中</span></span><br><span class="line">    enqueueUpdate(current, update);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通知React开始进行任务调度, 执行更新</span></span><br><span class="line">    scheduleWork(current, expirationTime);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> expirationTime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>到这里, ReactDOM.render函数的基本流程就理清了, 但还有一个问题没有解决, 那就是什么是FiberRoot对象? 这个问题在下一节中进行回答。</p>
+<h1 id="FiberRoot"><a href="#FiberRoot" class="headerlink" title="FiberRoot"></a>FiberRoot</h1><h2 id="FiberRoot对象是什么"><a href="#FiberRoot对象是什么" class="headerlink" title="FiberRoot对象是什么?"></a>FiberRoot对象是什么?</h2><p>FiberRoot对象是整个应用的起点, 包含了应用挂载的目标节点, 并记录应用更新过程的各种信息。</p>
+<h2 id="createContainer源码详解"><a href="#createContainer源码详解" class="headerlink" title="createContainer源码详解"></a>createContainer源码详解</h2><p>从上节中我们得知, FiberRoot对象是由createContainer方法创建并返回的。在这一节中, 将深入探讨其源码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createContainer</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  containerInfo: Container,</span></span></span><br><span class="line"><span class="function"><span class="params">  tag: RootTag,</span></span></span><br><span class="line"><span class="function"><span class="params">  hydrate: boolean,</span></span></span><br><span class="line"><span class="function"><span class="params">  hydrationCallbacks: null | SuspenseHydrationCallbacks,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>): <span class="title">OpaqueRoot</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> createFiberRoot(containerInfo, tag, hydrate, hydrationCallbacks);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createFiberRoot</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  containerInfo: any,</span></span></span><br><span class="line"><span class="function"><span class="params">  tag: RootTag,</span></span></span><br><span class="line"><span class="function"><span class="params">  hydrate: boolean,</span></span></span><br><span class="line"><span class="function"><span class="params">  hydrationCallbacks: null | SuspenseHydrationCallbacks,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>): <span class="title">FiberRoot</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> root: FiberRoot = (<span class="keyword">new</span> FiberRootNode(containerInfo, tag, hydrate): any);</span><br><span class="line">  <span class="keyword">if</span> (enableSuspenseCallback) &#123;</span><br><span class="line">    root.hydrationCallbacks = hydrationCallbacks;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 返回值为一个FiberNode对象, 对应当前应用所在的节点</span></span><br><span class="line">  <span class="comment">// 每一个React Element都有一个FiberNode对象, 且FiberNode对象具有和React Element相似的树结构</span></span><br><span class="line">  <span class="keyword">const</span> uninitializedFiber = createHostRootFiber(tag);</span><br><span class="line">  <span class="comment">// 该属性是整个FiberNode树的顶点   </span></span><br><span class="line">  root.current = uninitializedFiber;</span><br><span class="line">  uninitializedFiber.stateNode = root;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到, 最终的FiberRoot对象是由createFiberRoot创建的。FiberRoot对象具体的数据结构可参考以下<a href="https://react.jokcy.me/book/api/react-structure.html" target="_blank" rel="noopener">链接</a></p>
+<h2 id="FiberRoot的数据结构"><a href="#FiberRoot的数据结构" class="headerlink" title="FiberRoot的数据结构"></a>FiberRoot的数据结构</h2><h3 id="FiberRoot的类型定义"><a href="#FiberRoot的类型定义" class="headerlink" title="FiberRoot的类型定义"></a>FiberRoot的类型定义</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">type BaseFiberRootProperties = &#123;|</span><br><span class="line">  <span class="comment">// The type of root (legacy, batched, concurrent, etc.)</span></span><br><span class="line">  tag: RootTag,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Any additional information from the host associated with this root.</span></span><br><span class="line">  containerInfo: any,</span><br><span class="line">  <span class="comment">// Used only by persistent updates.</span></span><br><span class="line">  pendingChildren: any,</span><br><span class="line">  <span class="comment">// The currently active root fiber. This is the mutable root of the tree.</span></span><br><span class="line">  current: Fiber,</span><br><span class="line"></span><br><span class="line">  pingCache:</span><br><span class="line">    | <span class="built_in">WeakMap</span>&lt;Thenable, <span class="built_in">Set</span>&lt;ExpirationTime&gt;&gt;</span><br><span class="line">    | <span class="built_in">Map</span>&lt;Thenable, <span class="built_in">Set</span>&lt;ExpirationTime&gt;&gt;</span><br><span class="line">    | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  finishedExpirationTime: ExpirationTime,</span><br><span class="line">  <span class="comment">// A finished work-in-progress HostRoot that's ready to be committed.</span></span><br><span class="line">  finishedWork: Fiber | <span class="literal">null</span>,</span><br><span class="line">  <span class="comment">// Timeout handle returned by setTimeout. Used to cancel a pending timeout, if</span></span><br><span class="line">  <span class="comment">// it's superseded by a new one.</span></span><br><span class="line">  timeoutHandle: TimeoutHandle | NoTimeout,</span><br><span class="line">  <span class="comment">// Top context object, used by renderSubtreeIntoContainer</span></span><br><span class="line">  context: <span class="built_in">Object</span> | <span class="literal">null</span>,</span><br><span class="line">  pendingContext: <span class="built_in">Object</span> | <span class="literal">null</span>,</span><br><span class="line">  <span class="comment">// Determines if we should attempt to hydrate on the initial mount</span></span><br><span class="line">  +hydrate: boolean,</span><br><span class="line">  <span class="comment">// List of top-level batches. This list indicates whether a commit should be deferred. Also contains completion callbacks.</span></span><br><span class="line">  firstBatch: Batch | <span class="literal">null</span>,</span><br><span class="line">  <span class="comment">// Node returned by Scheduler.scheduleCallback</span></span><br><span class="line">  callbackNode: *,</span><br><span class="line">  <span class="comment">// Expiration of the callback associated with this root</span></span><br><span class="line">  callbackExpirationTime: ExpirationTime,</span><br><span class="line">  <span class="comment">// The earliest pending expiration time that exists in the tree</span></span><br><span class="line">  firstPendingTime: ExpirationTime,</span><br><span class="line">  <span class="comment">// The latest pending expiration time that exists in the tree</span></span><br><span class="line">  lastPendingTime: ExpirationTime,</span><br><span class="line">  <span class="comment">// The time at which a suspended component pinged the root to render again</span></span><br><span class="line">  pingTime: ExpirationTime,</span><br><span class="line">|&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// The following attributes are only used by interaction tracing builds.</span></span><br><span class="line"><span class="comment">// They enable interactions to be associated with their async work,</span></span><br><span class="line"><span class="comment">// And expose interaction metadata to the React DevTools Profiler plugin.</span></span><br><span class="line"><span class="comment">// Note that these attributes are only defined when the enableSchedulerTracing flag is enabled.</span></span><br><span class="line">type ProfilingOnlyFiberRootProperties = &#123;|</span><br><span class="line">  interactionThreadID: number,</span><br><span class="line">  memoizedInteractions: <span class="built_in">Set</span>&lt;Interaction&gt;,</span><br><span class="line">  pendingInteractionMap: PendingInteractionMap,</span><br><span class="line">|&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// The follow fields are only used by enableSuspenseCallback for hydration.</span></span><br><span class="line">type SuspenseCallbackOnlyFiberRootProperties = &#123;|</span><br><span class="line">  hydrationCallbacks: <span class="literal">null</span> | SuspenseHydrationCallbacks,</span><br><span class="line">|&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Exported FiberRoot type includes all properties,</span></span><br><span class="line"><span class="comment">// To avoid requiring potentially error-prone :any casts throughout the project.</span></span><br><span class="line"><span class="comment">// Profiling properties are only safe to access in profiling builds (when enableSchedulerTracing is true).</span></span><br><span class="line"><span class="comment">// The types are defined separately within this file to ensure they stay in sync.</span></span><br><span class="line"><span class="comment">// (We don't have to use an inline :any cast when enableSchedulerTracing is disabled.)</span></span><br><span class="line"><span class="keyword">export</span> type FiberRoot = &#123;</span><br><span class="line">  ...BaseFiberRootProperties,</span><br><span class="line">  ...ProfilingOnlyFiberRootProperties,</span><br><span class="line">  ...SuspenseCallbackOnlyFiberRootProperties,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="FiberRoot的构造函数"><a href="#FiberRoot的构造函数" class="headerlink" title="FiberRoot的构造函数"></a>FiberRoot的构造函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FiberRootNode</span>(<span class="params">containerInfo, tag, hydrate</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 用于标记当前节点的类型</span></span><br><span class="line">  <span class="keyword">this</span>.tag = tag;</span><br><span class="line">  <span class="comment">// root节点对应的Fiber对象</span></span><br><span class="line">  <span class="keyword">this</span>.current = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// root节点, render函数传入的第二个参数</span></span><br><span class="line">  <span class="keyword">this</span>.containerInfo = containerInfo;</span><br><span class="line">  <span class="comment">// 只有持久更新时会用到, 一般用于服务器端更新, 在react-dom中不会被用到</span></span><br><span class="line">  <span class="keyword">this</span>.pendingChildren = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.pingCache = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.finishedExpirationTime = NoWork;</span><br><span class="line">  <span class="comment">// 用于保存在一次更新过程中更新结果的Fiber对象</span></span><br><span class="line">  <span class="keyword">this</span>.finishedWork = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 用于实现Suspense组件的延时渲染功能</span></span><br><span class="line">  <span class="keyword">this</span>.timeoutHandle = noTimeout;</span><br><span class="line">  <span class="comment">// 只有主动调用renderSubtreeIntoContainer时才会用到</span></span><br><span class="line">  <span class="keyword">this</span>.context = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.pendingContext = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 布尔值, 表示是否要对原有节点进行复用</span></span><br><span class="line">  <span class="keyword">this</span>.hydrate = hydrate;</span><br><span class="line">  <span class="keyword">this</span>.firstBatch = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.callbackNode = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 这四个属性用于标记当前更新任务的优先级</span></span><br><span class="line">  <span class="keyword">this</span>.callbackExpirationTime = NoWork;</span><br><span class="line">  <span class="keyword">this</span>.firstPendingTime = NoWork;</span><br><span class="line">  <span class="keyword">this</span>.lastPendingTime = NoWork;</span><br><span class="line">  <span class="keyword">this</span>.pingTime = NoWork;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 用于进行追踪查看的属性</span></span><br><span class="line">  <span class="keyword">if</span> (enableSchedulerTracing) &#123;</span><br><span class="line">    <span class="keyword">this</span>.interactionThreadID = unstable_getThreadID();</span><br><span class="line">    <span class="keyword">this</span>.memoizedInteractions = <span class="keyword">new</span> <span class="built_in">Set</span>();</span><br><span class="line">    <span class="keyword">this</span>.pendingInteractionMap = <span class="keyword">new</span> <span class="built_in">Map</span>();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// 若当前组件使用了Suspense功能, 该属性用于挂载Suspense组件的回调函数</span></span><br><span class="line">  <span class="keyword">if</span> (enableSuspenseCallback) &#123;</span><br><span class="line">    <span class="keyword">this</span>.hydrationCallbacks = <span class="literal">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Fiber"><a href="#Fiber" class="headerlink" title="Fiber"></a>Fiber</h1><h2 id="Fiber是什么"><a href="#Fiber是什么" class="headerlink" title="Fiber是什么?"></a>Fiber是什么?</h2><p>每一个React Element都对应一个Fiber对象。在Fiber对象中记录了节点的各种状态, 如state、props等。Fiber对象也有和React Element类似的树形结构, 通过Fiber对象可以串联起整个应用。</p>
+<h2 id="Fiber的数据结构"><a href="#Fiber的数据结构" class="headerlink" title="Fiber的数据结构"></a>Fiber的数据结构</h2><h3 id="Fiber的类型定义"><a href="#Fiber的类型定义" class="headerlink" title="Fiber的类型定义"></a>Fiber的类型定义</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> type Fiber = &#123;|</span><br><span class="line">  <span class="comment">// These first fields are conceptually members of an Instance. This used to</span></span><br><span class="line">  <span class="comment">// be split into a separate type and intersected with the other Fiber fields,</span></span><br><span class="line">  <span class="comment">// but until Flow fixes its intersection bugs, we've merged them into a</span></span><br><span class="line">  <span class="comment">// single type.</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// An Instance is shared between all versions of a component. We can easily</span></span><br><span class="line">  <span class="comment">// break this out into a separate object to avoid copying so much to the</span></span><br><span class="line">  <span class="comment">// alternate versions of the tree. We put this on a single object for now to</span></span><br><span class="line">  <span class="comment">// minimize the number of objects created during the initial render.</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Tag identifying the type of fiber.</span></span><br><span class="line">  tag: WorkTag,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Unique identifier of this child.</span></span><br><span class="line">  key: <span class="literal">null</span> | string,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The value of element.type which is used to preserve the identity during</span></span><br><span class="line">  <span class="comment">// reconciliation of this child.</span></span><br><span class="line">  elementType: any,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The resolved function/class/ associated with this fiber.</span></span><br><span class="line">  type: any,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The local state associated with this fiber.</span></span><br><span class="line">  stateNode: any,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Conceptual aliases</span></span><br><span class="line">  <span class="comment">// parent : Instance -&gt; return The parent happens to be the same as the</span></span><br><span class="line">  <span class="comment">// return fiber since we've merged the fiber and instance.</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Remaining fields belong to Fiber</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// The Fiber to return to after finishing processing this one.</span></span><br><span class="line">  <span class="comment">// This is effectively the parent, but there can be multiple parents (two)</span></span><br><span class="line">  <span class="comment">// so this is only the parent of the thing we're currently processing.</span></span><br><span class="line">  <span class="comment">// It is conceptually the same as the return address of a stack frame.</span></span><br><span class="line">  <span class="keyword">return</span>: Fiber | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Singly Linked List Tree Structure.</span></span><br><span class="line">  child: Fiber | <span class="literal">null</span>,</span><br><span class="line">  sibling: Fiber | <span class="literal">null</span>,</span><br><span class="line">  index: number,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The ref last used to attach this node.</span></span><br><span class="line">  <span class="comment">// I'll avoid adding an owner field for prod and model that as functions.</span></span><br><span class="line">  ref: <span class="literal">null</span> | <span class="function">(<span class="params">((handle: mixed</span>) =&gt;</span> <span class="keyword">void</span>) &amp; &#123;<span class="attr">_stringRef</span>: ?string&#125;) | RefObject,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Input is the data coming into process this fiber. Arguments. Props.</span></span><br><span class="line">  pendingProps: any, <span class="comment">// This type will be more specific once we overload the tag.</span></span><br><span class="line">  memoizedProps: any, <span class="comment">// The props used to create the output.</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// A queue of state updates and callbacks.</span></span><br><span class="line">  updateQueue: UpdateQueue&lt;any&gt; | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The state used to create the output</span></span><br><span class="line">  memoizedState: any,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Dependencies (contexts, events) for this fiber, if it has any</span></span><br><span class="line">  dependencies: Dependencies | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Bitfield that describes properties about the fiber and its subtree. E.g.</span></span><br><span class="line">  <span class="comment">// the ConcurrentMode flag indicates whether the subtree should be async-by-</span></span><br><span class="line">  <span class="comment">// default. When a fiber is created, it inherits the mode of its</span></span><br><span class="line">  <span class="comment">// parent. Additional flags can be set at creation time, but after that the</span></span><br><span class="line">  <span class="comment">// value should remain unchanged throughout the fiber's lifetime, particularly</span></span><br><span class="line">  <span class="comment">// before its child fibers are created.</span></span><br><span class="line">  mode: TypeOfMode,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Effect</span></span><br><span class="line">  effectTag: SideEffectTag,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Singly linked list fast path to the next fiber with side-effects.</span></span><br><span class="line">  nextEffect: Fiber | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The first and last fiber with side-effect within this subtree. This allows</span></span><br><span class="line">  <span class="comment">// us to reuse a slice of the linked list when we reuse the work done within</span></span><br><span class="line">  <span class="comment">// this fiber.</span></span><br><span class="line">  firstEffect: Fiber | <span class="literal">null</span>,</span><br><span class="line">  lastEffect: Fiber | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Represents a time in the future by which this work should be completed.</span></span><br><span class="line">  <span class="comment">// Does not include work found in its subtree.</span></span><br><span class="line">  expirationTime: ExpirationTime,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// This is used to quickly determine if a subtree has no pending changes.</span></span><br><span class="line">  childExpirationTime: ExpirationTime,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// This is a pooled version of a Fiber. Every fiber that gets updated will</span></span><br><span class="line">  <span class="comment">// eventually have a pair. There are cases when we can clean up pairs to save</span></span><br><span class="line">  <span class="comment">// memory if we need to.</span></span><br><span class="line">  alternate: Fiber | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Time spent rendering this Fiber and its descendants for the current update.</span></span><br><span class="line">  <span class="comment">// This tells us how well the tree makes use of sCU for memoization.</span></span><br><span class="line">  <span class="comment">// It is reset to 0 each time we render and only updated when we don't bailout.</span></span><br><span class="line">  <span class="comment">// This field is only set when the enableProfilerTimer flag is enabled.</span></span><br><span class="line">  actualDuration?: number,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// If the Fiber is currently active in the "render" phase,</span></span><br><span class="line">  <span class="comment">// This marks the time at which the work began.</span></span><br><span class="line">  <span class="comment">// This field is only set when the enableProfilerTimer flag is enabled.</span></span><br><span class="line">  actualStartTime?: number,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Duration of the most recent render time for this Fiber.</span></span><br><span class="line">  <span class="comment">// This value is not updated when we bailout for memoization purposes.</span></span><br><span class="line">  <span class="comment">// This field is only set when the enableProfilerTimer flag is enabled.</span></span><br><span class="line">  selfBaseDuration?: number,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Sum of base times for all descendants of this Fiber.</span></span><br><span class="line">  <span class="comment">// This value bubbles up during the "complete" phase.</span></span><br><span class="line">  <span class="comment">// This field is only set when the enableProfilerTimer flag is enabled.</span></span><br><span class="line">  treeBaseDuration?: number,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Conceptual aliases</span></span><br><span class="line">  <span class="comment">// workInProgress : Fiber -&gt;  alternate The alternate used for reuse happens</span></span><br><span class="line">  <span class="comment">// to be the same as work in progress.</span></span><br><span class="line">  <span class="comment">// __DEV__ only</span></span><br><span class="line">  _debugID?: number,</span><br><span class="line">  _debugSource?: Source | <span class="literal">null</span>,</span><br><span class="line">  _debugOwner?: Fiber | <span class="literal">null</span>,</span><br><span class="line">  _debugIsCurrentlyTiming?: boolean,</span><br><span class="line">  _debugNeedsRemount?: boolean,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Used to verify that the order of hooks does not change between renders.</span></span><br><span class="line">  _debugHookTypes?: <span class="built_in">Array</span>&lt;HookType&gt; | <span class="literal">null</span>,</span><br><span class="line">|&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Fiber的构造函数"><a href="#Fiber的构造函数" class="headerlink" title="Fiber的构造函数"></a>Fiber的构造函数</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FiberNode</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  tag: WorkTag,</span></span></span><br><span class="line"><span class="function"><span class="params">  pendingProps: mixed,</span></span></span><br><span class="line"><span class="function"><span class="params">  key: null | string,</span></span></span><br><span class="line"><span class="function"><span class="params">  mode: TypeOfMode,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Instance</span></span><br><span class="line">  <span class="comment">// 标记不同的组件类型</span></span><br><span class="line">  <span class="keyword">this</span>.tag = tag;</span><br><span class="line">  <span class="comment">// ReactElement.key</span></span><br><span class="line">  <span class="keyword">this</span>.key = key;</span><br><span class="line">  <span class="comment">// ReactElement.type, 即createElement的第一个参数</span></span><br><span class="line">  <span class="keyword">this</span>.elementType = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 异步组件resolve之后返回的组件类型, 一般是function或者class</span></span><br><span class="line">  <span class="keyword">this</span>.type = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 对应当前节点的FiberRoot实例</span></span><br><span class="line">  <span class="keyword">this</span>.stateNode = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Fiber</span></span><br><span class="line">  <span class="comment">// 这四个属性用于串联整个Fiber树结构</span></span><br><span class="line">  <span class="comment">// 当前Fiber对象在树结构中的父节点</span></span><br><span class="line">  <span class="keyword">this</span>.return = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 当前Fiber对象在树结构中的第一个子节点</span></span><br><span class="line">  <span class="keyword">this</span>.child = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 当前Fiber对象在树结构中的下一个兄弟节点</span></span><br><span class="line">  <span class="keyword">this</span>.sibling = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.index = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// ReactElement.ref</span></span><br><span class="line">  <span class="keyword">this</span>.ref = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 更新后产生的新的props对象</span></span><br><span class="line">  <span class="keyword">this</span>.pendingProps = pendingProps;</span><br><span class="line">  <span class="comment">// 上次更新结束后产生的props对象</span></span><br><span class="line">  <span class="keyword">this</span>.memoizedProps = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 用于存放由于当前组件发起更新产生的更新队列</span></span><br><span class="line">  <span class="keyword">this</span>.updateQueue = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 上次更新完成的state对象 </span></span><br><span class="line">  <span class="keyword">this</span>.memoizedState = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 存放当前Fiber依赖的context列表 </span></span><br><span class="line">  <span class="keyword">this</span>.dependencies = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 该节点所采用的的渲染模式, 默认继承父Fiber对象, 创建后不应再修改</span></span><br><span class="line">  <span class="keyword">this</span>.mode = mode;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Effects</span></span><br><span class="line">  <span class="comment">// Effects用于标记组件要执行的更新以及生命周期</span></span><br><span class="line">  <span class="keyword">this</span>.effectTag = NoEffect;</span><br><span class="line">  <span class="keyword">this</span>.nextEffect = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">this</span>.firstEffect = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.lastEffect = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 当前节点产生的更新请求的过期时间</span></span><br><span class="line">  <span class="keyword">this</span>.expirationTime = NoWork;</span><br><span class="line">  <span class="comment">// 子节点产生的更新请求的过期时间</span></span><br><span class="line">  <span class="keyword">this</span>.childExpirationTime = NoWork;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 用于保存当前Fiber对象上次更新前的副本, 便于复用</span></span><br><span class="line">  <span class="comment">// workInProcess是用于记录需要更新的Fiber节点的树形结构, 其中每个节点都与Fiber节点一一对应, 该属性可认为是连接workInProcess和Fiber对象的通道</span></span><br><span class="line">  <span class="comment">// currentFiber &lt;==&gt; workInProcess</span></span><br><span class="line">  <span class="comment">// 所有的更新都先在workInProcess中进行, 完成后在改变对应的Fiber节点</span></span><br><span class="line">  <span class="keyword">this</span>.alternate = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 用于记录渲染过程的时间信息</span></span><br><span class="line">  <span class="keyword">if</span> (enableProfilerTimer) &#123;</span><br><span class="line">    <span class="comment">// Note: The following is done to avoid a v8 performance cliff.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// Initializing the fields below to smis and later updating them with</span></span><br><span class="line">    <span class="comment">// double values will cause Fibers to end up having separate shapes.</span></span><br><span class="line">    <span class="comment">// This behavior/bug has something to do with Object.preventExtension().</span></span><br><span class="line">    <span class="comment">// Fortunately this only impacts DEV builds.</span></span><br><span class="line">    <span class="comment">// Unfortunately it makes React unusably slow for some applications.</span></span><br><span class="line">    <span class="comment">// To work around this, initialize the fields below with doubles.</span></span><br><span class="line">    <span class="comment">//</span></span><br><span class="line">    <span class="comment">// Learn more about this here:</span></span><br><span class="line">    <span class="comment">// https://github.com/facebook/react/issues/14365</span></span><br><span class="line">    <span class="comment">// https://bugs.chromium.org/p/v8/issues/detail?id=8538</span></span><br><span class="line">    <span class="keyword">this</span>.actualDuration = <span class="built_in">Number</span>.NaN;</span><br><span class="line">    <span class="keyword">this</span>.actualStartTime = <span class="built_in">Number</span>.NaN;</span><br><span class="line">    <span class="keyword">this</span>.selfBaseDuration = <span class="built_in">Number</span>.NaN;</span><br><span class="line">    <span class="keyword">this</span>.treeBaseDuration = <span class="built_in">Number</span>.NaN;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// It's okay to replace the initial doubles with smis after initialization.</span></span><br><span class="line">    <span class="comment">// This won't trigger the performance cliff mentioned above,</span></span><br><span class="line">    <span class="comment">// and it simplifies other profiler code (including DevTools).</span></span><br><span class="line">    <span class="keyword">this</span>.actualDuration = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">this</span>.actualStartTime = <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">this</span>.selfBaseDuration = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">this</span>.treeBaseDuration = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// This is normally DEV-only except www when it adds listeners.</span></span><br><span class="line">  <span class="keyword">if</span> (enableUserTimingAPI) &#123;</span><br><span class="line">    <span class="keyword">this</span>._debugID = debugCounter++;</span><br><span class="line">    <span class="keyword">this</span>._debugIsCurrentlyTiming = <span class="literal">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (__DEV__) &#123;</span><br><span class="line">    <span class="keyword">this</span>._debugSource = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>._debugOwner = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>._debugNeedsRemount = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">this</span>._debugHookTypes = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (!hasBadMapPolyfill &amp;&amp; <span class="keyword">typeof</span> <span class="built_in">Object</span>.preventExtensions === <span class="string">'function'</span>) &#123;</span><br><span class="line">      <span class="built_in">Object</span>.preventExtensions(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="update-amp-updateQueue"><a href="#update-amp-updateQueue" class="headerlink" title="update &amp; updateQueue"></a>update &amp; updateQueue</h1><p>书接上回, 再来回顾一下上次深入ReactDOM.render调用栈的结果, 在最后调用了<code>scheduleRootUpdate</code>方法, 在这个方法中创建了更新请求并执行了更新任务。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">scheduleRootUpdate</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  current: Fiber,</span></span></span><br><span class="line"><span class="function"><span class="params">  element: ReactNodeList,</span></span></span><br><span class="line"><span class="function"><span class="params">  expirationTime: ExpirationTime,</span></span></span><br><span class="line"><span class="function"><span class="params">  suspenseConfig: null | SuspenseConfig,</span></span></span><br><span class="line"><span class="function"><span class="params">  callback: ?Function,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 创建代表更新请求的对象</span></span><br><span class="line">    <span class="keyword">const</span> update = createUpdate(expirationTime, suspenseConfig);</span><br><span class="line">    update.payload = &#123;element&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将更新请求放入更新队列中</span></span><br><span class="line">    enqueueUpdate(current, update);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 通知React开始进行任务调度, 执行更新</span></span><br><span class="line">    scheduleWork(current, expirationTime);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> expirationTime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在本节中, 将深入<code>scheduleRootUpdate</code>方法, 介绍update对象的数据结构以及update对象的创建过程。</p>
+<h2 id="update"><a href="#update" class="headerlink" title="update"></a>update</h2><h3 id="update对象是什么"><a href="#update对象是什么" class="headerlink" title="update对象是什么?"></a>update对象是什么?</h3><p>update对象是用于记录更新所需要的信息的组件, 存放于Fiber.updateQueue中。在scheduleRootUpdate函数中, 是使用createUpdate来创建update对象的。在创建了update对象后, 将其放入Fiber对象的updateQueue属性中。</p>
+<h3 id="update对象的定义-amp-createUpdate"><a href="#update对象的定义-amp-createUpdate" class="headerlink" title="update对象的定义 &amp; createUpdate"></a>update对象的定义 &amp; createUpdate</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> type Update&lt;State&gt; = &#123;</span><br><span class="line">  expirationTime: ExpirationTime,</span><br><span class="line">  suspenseConfig: <span class="literal">null</span> | SuspenseConfig,</span><br><span class="line"></span><br><span class="line">  tag: <span class="number">0</span> | <span class="number">1</span> | <span class="number">2</span> | <span class="number">3</span>,</span><br><span class="line">  payload: any,</span><br><span class="line">  callback: <span class="function">(<span class="params">(</span>) =&gt;</span> mixed) | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  next: Update&lt;State&gt; | <span class="literal">null</span>,</span><br><span class="line">  nextEffect: Update&lt;State&gt; | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">//DEV only</span></span><br><span class="line">  priority?: ReactPriorityLevel,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createUpdate</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  expirationTime: ExpirationTime,</span></span></span><br><span class="line"><span class="function"><span class="params">  suspenseConfig: null | SuspenseConfig,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>): <span class="title">Update</span>&lt;*&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> update: Update&lt;*&gt; = &#123;</span><br><span class="line">    <span class="comment">// 更新请求的过期时间</span></span><br><span class="line">    expirationTime,</span><br><span class="line">    suspenseConfig,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分别对应四种情况, 分别代表需要进行的操作</span></span><br><span class="line">    <span class="comment">// 更新state</span></span><br><span class="line">    <span class="comment">// const UpdateState = 0;</span></span><br><span class="line">    <span class="comment">// 替换state</span></span><br><span class="line">    <span class="comment">// const ReplaceState = 1;</span></span><br><span class="line">    <span class="comment">// 强制更新state</span></span><br><span class="line">    <span class="comment">// const ForceUpdate = 2;</span></span><br><span class="line">    <span class="comment">// 实现Error Boundary功能</span></span><br><span class="line">    <span class="comment">// const CaptureUpdate = 3;</span></span><br><span class="line">    tag: UpdateState,</span><br><span class="line">    <span class="comment">// 需要进行更新的内容, 如setState的第一个参数</span></span><br><span class="line">    payload: <span class="literal">null</span>,</span><br><span class="line">    <span class="comment">// setState 或 render对应的回调函数</span></span><br><span class="line">    callback: <span class="literal">null</span>,</span><br><span class="line">    <span class="comment">// 下一个update对象</span></span><br><span class="line">    next: <span class="literal">null</span>,</span><br><span class="line">    <span class="comment">// 下一个sideEffect</span></span><br><span class="line">    nextEffect: <span class="literal">null</span>,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> update;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="updateQueue"><a href="#updateQueue" class="headerlink" title="updateQueue"></a>updateQueue</h2><h3 id="updateQueue是什么"><a href="#updateQueue是什么" class="headerlink" title="updateQueue是什么?"></a>updateQueue是什么?</h3><p>updateQueue是用于存放update对象的单向链表结构, 挂载在发起更新的Fiber对象中。</p>
+<h3 id="updateQueue对象的定义"><a href="#updateQueue对象的定义" class="headerlink" title="updateQueue对象的定义"></a>updateQueue对象的定义</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> type UpdateQueue&lt;State&gt; = &#123;</span><br><span class="line">  <span class="comment">// 上次渲染完成后的当前节点的state对象</span></span><br><span class="line">  baseState: State,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// update对象单向链表的头部</span></span><br><span class="line">  firstUpdate: Update&lt;State&gt; | <span class="literal">null</span>,</span><br><span class="line">  <span class="comment">// update对象单向链表的尾部</span></span><br><span class="line">  lastUpdate: Update&lt;State&gt; | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第一个由于错误捕获产生的update</span></span><br><span class="line">  firstCapturedUpdate: Update&lt;State&gt; | <span class="literal">null</span>,</span><br><span class="line">  <span class="comment">// 最后一个由于错误捕获产生的update</span></span><br><span class="line">  lastCapturedUpdate: Update&lt;State&gt; | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第一个sideEffect</span></span><br><span class="line">  firstEffect: Update&lt;State&gt; | <span class="literal">null</span>,</span><br><span class="line">  <span class="comment">// 最后一个sideEffect</span></span><br><span class="line">  lastEffect: Update&lt;State&gt; | <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第一个由于错误捕获产生的sideEffect</span></span><br><span class="line">  firstCapturedEffect: Update&lt;State&gt; | <span class="literal">null</span>,</span><br><span class="line">  <span class="comment">// 最后一个由于错误捕获产生的sideEffect</span></span><br><span class="line">  lastCapturedEffect: Update&lt;State&gt; | <span class="literal">null</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="enqueueUpdate及其用到的函数"><a href="#enqueueUpdate及其用到的函数" class="headerlink" title="enqueueUpdate及其用到的函数"></a>enqueueUpdate及其用到的函数</h3><p>在enqueueUpdate中, 将最新产生的update对象放入了Fiber.updateQueue的尾部, 同时保证Fiber.alternate.updateQueue与Fiber.updateQueue的一致性。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createUpdateQueue</span>&lt;<span class="title">State</span>&gt;(<span class="params">baseState: State</span>): <span class="title">UpdateQueue</span>&lt;<span class="title">State</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> queue: UpdateQueue&lt;State&gt; = &#123;</span><br><span class="line">    baseState,</span><br><span class="line">    firstUpdate: <span class="literal">null</span>,</span><br><span class="line">    lastUpdate: <span class="literal">null</span>,</span><br><span class="line">    firstCapturedUpdate: <span class="literal">null</span>,</span><br><span class="line">    lastCapturedUpdate: <span class="literal">null</span>,</span><br><span class="line">    firstEffect: <span class="literal">null</span>,</span><br><span class="line">    lastEffect: <span class="literal">null</span>,</span><br><span class="line">    firstCapturedEffect: <span class="literal">null</span>,</span><br><span class="line">    lastCapturedEffect: <span class="literal">null</span>,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span> queue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">cloneUpdateQueue</span>&lt;<span class="title">State</span>&gt;(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  currentQueue: UpdateQueue&lt;State&gt;,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>): <span class="title">UpdateQueue</span>&lt;<span class="title">State</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> queue: UpdateQueue&lt;State&gt; = &#123;</span><br><span class="line">    baseState: currentQueue.baseState,</span><br><span class="line">    firstUpdate: currentQueue.firstUpdate,</span><br><span class="line">    lastUpdate: currentQueue.lastUpdate,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// keep these effects.</span></span><br><span class="line">    firstCapturedUpdate: <span class="literal">null</span>,</span><br><span class="line">    lastCapturedUpdate: <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">    firstEffect: <span class="literal">null</span>,</span><br><span class="line">    lastEffect: <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">    firstCapturedEffect: <span class="literal">null</span>,</span><br><span class="line">    lastCapturedEffect: <span class="literal">null</span>,</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">return</span> queue;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">createUpdate</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  expirationTime: ExpirationTime,</span></span></span><br><span class="line"><span class="function"><span class="params">  suspenseConfig: null | SuspenseConfig,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>): <span class="title">Update</span>&lt;*&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> update: Update&lt;*&gt; = &#123;</span><br><span class="line">    expirationTime,</span><br><span class="line">    suspenseConfig,</span><br><span class="line"></span><br><span class="line">    tag: UpdateState,</span><br><span class="line">    payload: <span class="literal">null</span>,</span><br><span class="line">    callback: <span class="literal">null</span>,</span><br><span class="line"></span><br><span class="line">    next: <span class="literal">null</span>,</span><br><span class="line">    nextEffect: <span class="literal">null</span>,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> update;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">appendUpdateToQueue</span>&lt;<span class="title">State</span>&gt;(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  queue: UpdateQueue&lt;State&gt;,</span></span></span><br><span class="line"><span class="function"><span class="params">  update: Update&lt;State&gt;,</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// Append the update to the end of the list.</span></span><br><span class="line">  <span class="keyword">if</span> (queue.lastUpdate === <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="comment">// Queue is empty</span></span><br><span class="line">    queue.firstUpdate = queue.lastUpdate = update;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    queue.lastUpdate.next = update;</span><br><span class="line">    queue.lastUpdate = update;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">enqueueUpdate</span>&lt;<span class="title">State</span>&gt;(<span class="params">fiber: Fiber, update: Update&lt;State&gt;</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> alternate = fiber.alternate;</span><br><span class="line">  <span class="keyword">let</span> queue1;</span><br><span class="line">  <span class="keyword">let</span> queue2;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 当前节点初次产生更新</span></span><br><span class="line">  <span class="keyword">if</span> (alternate === <span class="literal">null</span>) &#123;</span><br><span class="line">    queue1 = fiber.updateQueue;</span><br><span class="line">    queue2 = <span class="literal">null</span>;</span><br><span class="line">    <span class="comment">// 创建updateQueue, 并将其挂载在Fiber对象上</span></span><br><span class="line">    <span class="keyword">if</span> (queue1 === <span class="literal">null</span>) &#123;</span><br><span class="line">      queue1 = fiber.updateQueue = createUpdateQueue(fiber.memoizedState);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// There are two owners.</span></span><br><span class="line">    queue1 = fiber.updateQueue;</span><br><span class="line">    queue2 = alternate.updateQueue;</span><br><span class="line">    <span class="keyword">if</span> (queue1 === <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (queue2 === <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Neither fiber has an update queue. Create new ones.</span></span><br><span class="line">        queue1 = fiber.updateQueue = createUpdateQueue(fiber.memoizedState);</span><br><span class="line">        queue2 = alternate.updateQueue = createUpdateQueue(</span><br><span class="line">          alternate.memoizedState,</span><br><span class="line">        );</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Only one fiber has an update queue. Clone to create a new one.</span></span><br><span class="line">        queue1 = fiber.updateQueue = cloneUpdateQueue(queue2);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (queue2 === <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Only one fiber has an update queue. Clone to create a new one.</span></span><br><span class="line">        queue2 = alternate.updateQueue = cloneUpdateQueue(queue1);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Both owners have an update queue.</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (queue2 === <span class="literal">null</span> || queue1 === queue2) &#123;</span><br><span class="line">    <span class="comment">// There's only a single queue.</span></span><br><span class="line">    appendUpdateToQueue(queue1, update);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// There are two queues. We need to append the update to both queues,</span></span><br><span class="line">    <span class="comment">// while accounting for the persistent structure of the list — we don't</span></span><br><span class="line">    <span class="comment">// want the same update to be added multiple times.</span></span><br><span class="line">    <span class="keyword">if</span> (queue1.lastUpdate === <span class="literal">null</span> || queue2.lastUpdate === <span class="literal">null</span>) &#123;</span><br><span class="line">      <span class="comment">// One of the queues is not empty. We must add the update to both queues.</span></span><br><span class="line">      appendUpdateToQueue(queue1, update);</span><br><span class="line">      appendUpdateToQueue(queue2, update);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// Both queues are non-empty. The last update is the same in both lists,</span></span><br><span class="line">      <span class="comment">// because of structural sharing. So, only append to one of the lists.</span></span><br><span class="line">      appendUpdateToQueue(queue1, update);</span><br><span class="line">      <span class="comment">// But we still need to update the `lastUpdate` pointer of queue2.</span></span><br><span class="line">      queue2.lastUpdate = update;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="expirationTime"><a href="#expirationTime" class="headerlink" title="expirationTime"></a>expirationTime</h1><p>在之前的代码中, 多次涉及到了expirationTime。这是用于判断更新任务优先级的重要标志。<br>由于篇幅过长, 详情见<a href="https://xdyushenli.github.io/2019/11/07/react-expiration-time/" target="_blank" rel="noopener">React中的expirationTime</a>。</p>
+<h1 id="setState-amp-forceUpdate"><a href="#setState-amp-forceUpdate" class="headerlink" title="setState &amp; forceUpdate"></a>setState &amp; forceUpdate</h1><h2 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h2><ul>
+<li>都是给节点的Fiber创建更新。<ul>
+<li>对于ReactDOM.render而言, 节点是整个应用。</li>
+<li>对于setState和forceUpdate而言, 节点是当前的Class Component的实例。</li>
+</ul>
+</li>
+<li>更新类型不同, 二者生成的update对象上的tag属性不同。<h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2>setState和forceUpdate的源代码和updateContainer基本一致, 所以不做赘述。</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/react/" rel="tag"># react</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/11/react-children-map/" rel="next" title="React.Children.map源码解析">
+                <i class="fa fa-chevron-left"></i> React.Children.map源码解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/11/17/sheetjs/" rel="prev" title="SheetJS常用API">
+                SheetJS常用API <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Mett Li</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#本章简介"><span class="nav-number">1.</span> <span class="nav-text">本章简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ReactDOM-render"><span class="nav-number">2.</span> <span class="nav-text">ReactDOM.render</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建更新的步骤"><span class="nav-number">2.1.</span> <span class="nav-text">创建更新的步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ReactDOM-render源码详解"><span class="nav-number">2.2.</span> <span class="nav-text">ReactDOM.render源码详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是ReactSyncRoot对象"><span class="nav-number">2.2.1.</span> <span class="nav-text">什么是ReactSyncRoot对象?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unbatchedUpdates-amp-updateContainer"><span class="nav-number">2.2.2.</span> <span class="nav-text">unbatchedUpdates &amp; updateContainer</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#FiberRoot"><span class="nav-number">3.</span> <span class="nav-text">FiberRoot</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#FiberRoot对象是什么"><span class="nav-number">3.1.</span> <span class="nav-text">FiberRoot对象是什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#createContainer源码详解"><span class="nav-number">3.2.</span> <span class="nav-text">createContainer源码详解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FiberRoot的数据结构"><span class="nav-number">3.3.</span> <span class="nav-text">FiberRoot的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FiberRoot的类型定义"><span class="nav-number">3.3.1.</span> <span class="nav-text">FiberRoot的类型定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FiberRoot的构造函数"><span class="nav-number">3.3.2.</span> <span class="nav-text">FiberRoot的构造函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Fiber"><span class="nav-number">4.</span> <span class="nav-text">Fiber</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Fiber是什么"><span class="nav-number">4.1.</span> <span class="nav-text">Fiber是什么?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fiber的数据结构"><span class="nav-number">4.2.</span> <span class="nav-text">Fiber的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiber的类型定义"><span class="nav-number">4.2.1.</span> <span class="nav-text">Fiber的类型定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiber的构造函数"><span class="nav-number">4.2.2.</span> <span class="nav-text">Fiber的构造函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#update-amp-updateQueue"><span class="nav-number">5.</span> <span class="nav-text">update &amp; updateQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#update"><span class="nav-number">5.1.</span> <span class="nav-text">update</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#update对象是什么"><span class="nav-number">5.1.1.</span> <span class="nav-text">update对象是什么?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#update对象的定义-amp-createUpdate"><span class="nav-number">5.1.2.</span> <span class="nav-text">update对象的定义 &amp; createUpdate</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#updateQueue"><span class="nav-number">5.2.</span> <span class="nav-text">updateQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#updateQueue是什么"><span class="nav-number">5.2.1.</span> <span class="nav-text">updateQueue是什么?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#updateQueue对象的定义"><span class="nav-number">5.2.2.</span> <span class="nav-text">updateQueue对象的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#enqueueUpdate及其用到的函数"><span class="nav-number">5.2.3.</span> <span class="nav-text">enqueueUpdate及其用到的函数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#expirationTime"><span class="nav-number">6.</span> <span class="nav-text">expirationTime</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#setState-amp-forceUpdate"><span class="nav-number">7.</span> <span class="nav-text">setState &amp; forceUpdate</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#核心"><span class="nav-number">7.1.</span> <span class="nav-text">核心</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#说明"><span class="nav-number">7.2.</span> <span class="nav-text">说明</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mett Li</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
