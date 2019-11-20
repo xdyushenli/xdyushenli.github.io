@@ -79,13 +79,17 @@
 
 
 
+<meta name="description" content="什么情况下，用translate()而不用绝对定位？什么时候，情况相反。translate()是transform的一个值。改变transform或opacity不会触发浏览器重新布局（reflow）或重绘（repaint），只会触发复合（compositions）。而改变绝对定位会触发重新布局，进而触发重绘和复合。transform使浏览器为元素创建一个 GPU 图层，但改变绝对定位会使用到 C">
 <meta property="og:type" content="website">
 <meta property="og:title" content="敝舍">
-<meta property="og:url" content="http://yoursite.com/archives/2019/page/2/index.html">
+<meta property="og:url" content="http://yoursite.com/trash/前端常见问题.html">
 <meta property="og:site_name" content="敝舍">
+<meta property="og:description" content="什么情况下，用translate()而不用绝对定位？什么时候，情况相反。translate()是transform的一个值。改变transform或opacity不会触发浏览器重新布局（reflow）或重绘（repaint），只会触发复合（compositions）。而改变绝对定位会触发重新布局，进而触发重绘和复合。transform使浏览器为元素创建一个 GPU 图层，但改变绝对定位会使用到 C">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-17T13:07:32.776Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="敝舍">
+<meta name="twitter:description" content="什么情况下，用translate()而不用绝对定位？什么时候，情况相反。translate()是transform的一个值。改变transform或opacity不会触发浏览器重新布局（reflow）或重绘（repaint），只会触发复合（compositions）。而改变绝对定位会触发重新布局，进而触发重绘和复合。transform使浏览器为元素创建一个 GPU 图层，但改变绝对定位会使用到 C">
 
 
 
@@ -115,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/2019/page/2/">
+  <link rel="canonical" href="http://yoursite.com/trash/前端常见问题.html">
 
 
 
 
 
-  <title>归档 | 敝舍</title>
+  <title> | 敝舍</title>
   
 
 
@@ -140,7 +144,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -214,146 +218,47 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
 
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        嗯..! 目前共计 13 篇日志。 继续努力。
-      </span>
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
 
       
+      
+      
+      <div class="post-body">
+        
+        
+          <p>什么情况下，用translate()而不用绝对定位？什么时候，情况相反。<br>translate()是transform的一个值。改变transform或opacity不会触发浏览器重新布局（reflow）或重绘（repaint），只会触发复合（compositions）。而改变绝对定位会触发重新布局，进而触发重绘和复合。transform使浏览器为元素创建一个 GPU 图层，但改变绝对定位会使用到 CPU。 因此translate()更高效，可以缩短平滑动画的绘制时间。</p>
+<p>当使用translate()时，元素仍然占据其原始空间（有点像position：relative），这与改变绝对定位不同。</p>
+<p>响应式设计与自适应设计有何不同？<br>响应式设计和自适应设计都以提高不同设备间的用户体验为目标，根据视窗大小、分辨率、使用环境和控制方式等参数进行优化调整。</p>
+<p>响应式设计的适应性原则：网站应该凭借一份代码，在各种设备上都有良好的显示和使用效果。响应式网站通过使用媒体查询，自适应栅格和响应式图片，基于多种因素进行变化，创造出优良的用户体验。就像一个球通过膨胀和收缩，来适应不同大小的篮圈。</p>
+<p>自适应设计更像是渐进式增强的现代解释。与响应式设计单一地去适配不同，自适应设计通过检测设备和其他特征，从早已定义好的一系列视窗大小和其他特性中，选出最恰当的功能和布局。与使用一个球去穿过各种的篮筐不同，自适应设计允许使用多个球，然后根据不同的篮筐大小，去选择最合适的一个。</p>
+<p>inline和inline-block有什么区别？<br>我把block也加入其中，为了获得更好的比较。</p>
+<p>block    inline-block    inline<br>大小    填充其父容器的宽度。    取决于内容。    取决于内容。<br>定位    从新的一行开始，并且不允许旁边有 HTML 元素（除非是float）    与其他内容一起流动，并允许旁边有其他元素。    与其他内容一起流动，并允许旁边有其他元素。<br>能否设置width和height    能    能    不能。 设置会被忽略。<br>可以使用vertical-align对齐    不可以    可以    可以<br>边距（margin）和填充（padding）    各个方向都存在    各个方向都存在    只有水平方向存在。垂直方向会被忽略。 尽管border和padding在content周围，但垂直方向上的空间取决于’line-height’<br>浮动（float）    -    -    就像一个block元素，可以设置垂直边距和填充。</p>
+<p>说说你对盒模型的理解，以及如何告知浏览器使用不同的盒模型渲染布局。<br>CSS 盒模型描述了以文档树中的元素而生成的矩形框，并根据排版模式进行布局。每个盒子都有一个内容区域（例如文本，图像等）以及周围可选的padding、border和margin区域。</p>
+<p>CSS 盒模型负责计算：</p>
+<p>块级元素占用多少空间。<br>边框是否重叠，边距是否合并。<br>盒子的尺寸。<br>盒模型有以下规则：</p>
+<p>块级元素的大小由width、height、padding、border和margin决定。<br>如果没有指定height，则块级元素的高度等于其包含子元素的内容高度加上padding（除非有浮动元素，请参阅下文）。<br>如果没有指定width，则非浮动块级元素的宽度等于其父元素的宽度减去父元素的padding。<br>元素的height是由内容的height来计算的。<br>元素的width是由内容的width来计算的。<br>默认情况下，padding和border不是元素width和height的组成部分。</p>
 
         
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/03/17/wx/" itemprop="url">
-              
-                <span itemprop="name">微信小程序架构的研究</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-03-17T16:30:01+08:00" content="2019-03-17">
-          03-17
-        </time>
       </div>
-
-    </header>
-  </article>
-
-
-
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/02/26/sass/" itemprop="url">
-              
-                <span itemprop="name">sass快速教程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-02-26T16:06:28+08:00" content="2019-02-26">
-          02-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/20/build-blog/" itemprop="url">
-              
-                <span itemprop="name">博客快速搭建指南(Hexo + github)</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-01-20T14:59:46+08:00" content="2019-01-20">
-          01-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
-
     </div>
+    
+    
+    
   </div>
-  
-  
-  
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2019/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/2019/">1</a><span class="page-number current">2</span>
-  </nav>
-
-
 
 
           </div>
@@ -361,6 +266,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -573,6 +482,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

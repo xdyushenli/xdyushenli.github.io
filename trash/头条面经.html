@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="头条一面 栈跟队列的区别？给两个数组，手搓出几种不同的队列栈指先进先出，队列为先进后出。一般队列（一头进一头出）、双端队列（两端都可进行出队入队）、优先队列（有序，最重要的元素总在最前）。一般队列 function (dataStore) { this.dataStore = dataStore; this.enqueue = enqueue; // 向队尾添加元素 this.dequeue =">
+<meta property="og:type" content="website">
+<meta property="og:title" content="敝舍">
+<meta property="og:url" content="http://yoursite.com/trash/头条面经.html">
+<meta property="og:site_name" content="敝舍">
+<meta property="og:description" content="头条一面 栈跟队列的区别？给两个数组，手搓出几种不同的队列栈指先进先出，队列为先进后出。一般队列（一头进一头出）、双端队列（两端都可进行出队入队）、优先队列（有序，最重要的元素总在最前）。一般队列 function (dataStore) { this.dataStore = dataStore; this.enqueue = enqueue; // 向队尾添加元素 this.dequeue =">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-08T05:58:55.666Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="敝舍">
+<meta name="twitter:description" content="头条一面 栈跟队列的区别？给两个数组，手搓出几种不同的队列栈指先进先出，队列为先进后出。一般队列（一头进一头出）、双端队列（两端都可进行出队入队）、优先队列（有序，最重要的元素总在最前）。一般队列 function (dataStore) { this.dataStore = dataStore; this.enqueue = enqueue; // 向队尾添加元素 this.dequeue =">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/trash/头条面经.html">
+
+
+
+
+
+  <title> | 敝舍</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">敝舍</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+	<h1 class="post-title" itemprop="name headline"></h1>
+
+
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <h1 id="头条一面"><a href="#头条一面" class="headerlink" title="头条一面"></a>头条一面</h1><ol>
+<li>栈跟队列的区别？给两个数组，手搓出几种不同的队列<br>栈指先进先出，队列为先进后出。一般队列（一头进一头出）、双端队列（两端都可进行出队入队）、优先队列（有序，最重要的元素总在最前）。<br>一般队列 function (dataStore) {<br> this.dataStore = dataStore;<br> this.enqueue = enqueue; // 向队尾添加元素<br> this.dequeue = dequeue; // 删除队首元素<br> this.first = first; // 查看第一个元素<br> this.last = last; // 查看最后一个元素<br> this.clear = clear; // 清空队列<br> this.isEmpty = isEmpty; // 判断是否为空<br> this.toString = toString; // 显示所有元素<br>}</li>
+</ol>
+<p>function enqueue (val) {<br>    // 如果写在构造函数里面的话，this不用加<br>    this.dataStore.push(val)<br>}</p>
+<p>function dequeue () {<br>    if (this.isEmpty()) return ‘This enqueue is empty!’<br>    else this.dataStore.shift();<br>}</p>
+<p>function first () {<br>    if (this.isEmpty()) return ‘This enqueue is empty!’<br>    else return this.dataStore[0]<br>}</p>
+<p>function last () {<br>    if (this.isEmpty()) return ‘This enqueue is empty!’<br>    else return this.dataStroe[this.dataStore.length - 1]<br>}</p>
+<p>function clear () {<br>    this.dataStore = [];<br>}</p>
+<p>function isEmpty () {<br>    return (this.dataStore.length === 0 ? true : false)<br>}</p>
+<p>function toString () {<br>    return this.dataStore.toString() // join(‘/n’)<br>}</p>
+<p>两端队列 基本一样，修改enqueue和dequeue方法<br>function enqueue (val, isBack) {<br>    if (isBack) this.dataStore.push(val);<br>    else this.dataStore.unshift(val);<br>}</p>
+<p>function dequeue (isFront) {<br>    if (this.isEmpty) return ‘This queue is empty!’<br>    else if (isFront) this.dataStore.shift();<br>    else this.dataStore.pop();<br>}</p>
+<p>优先队列 需要为元素添加优先级，且插入时要按照优先级插入<br>// 创建具有优先级的元素<br>function createElement (val, priority) {<br>    this.val = val;<br>    this.priority = priority;<br>}</p>
+<p>// 按优先级顺序插入<br>function enqueue (val, priotity) {<br>    let ele = new CreateElement(val, priority);</p>
+<pre><code>if (this.isEmpty()) {
+    this.dataStore.push(ele)
+} else {
+    let isAdded = false;
+
+    for(let i = 0; i &lt; this.dataStore.length; i++) {
+        // for..of.. 遍历出的是value
+        if (this.dataStore[i].priority &lt; ele.priority) {
+            isAdded = ture;
+            this.dataStore.splice(i, 0, ele)
+        }
+    }
+
+    if (!isAdded) this.dataStore.push(ele)
+}</code></pre><p>}</p>
+<p>循环队列<br>规定队列的最大长度，增加判断队列是否已满的方法。增加两个指向队列头和尾的指针，通过判断两指针是否重合来辨别队列是否已满。增加元素时，在数组空余处添加，队尾指针总指向数组中最先的空余处。</p>
+<ol start="2">
+<li><p>栈跟堆的区别？<br>栈为编译器自动分配和回收的。堆为程序员自己请求的内存空间，需手动管理，使用后不及时回收易造成内存泄漏。</p>
+</li>
+<li><p>HTML Collection, NodeList 区别？<br>HTMLCollection是元素集合，可通过方括号语法选中元素，方括号中数字代表序号，字符串代表id。document、form、select等都返回HTMLCollection。该集合是实时的。<br>NodeList是节点集合（包括文本、图片等）。由Node.childNodes和document.querySelectorAll返回。其中Node.childNodes返回的是实时的，另一个返回的是静态的。该集合同样可通过方括号语法访问。</p>
+</li>
+<li><p>bind的参数有哪些，手搓bind如何进行原生设计？<br>第一个参数为this指定的值，必须。之后的一序列参数将会在传递的实参前传入作为它的参数，这些参数会被插入到目标函数的参数列表的开始位置，传递给绑定函数的参数会跟在它们后面。返回具有该this值和初始参数的函数的备份。<br>function bind(that, …args) {<br> let target = this;</p>
+<p> let fBound = function (…trueArgs) {</p>
+<pre><code>// bind作为构造函数时，this值指向实例，其绑定的this值会失效，但传入的参数依然有效。作为一般函数时，this指向window。
+// instanceof运算符用于测试构造函数的prototype属性是否出现在对象的原型链中的任何位置。
+return target.apply(this instanceof fBound ? this : that, args.concat(trueArgs))</code></pre><p> }</p>
+<p> // 修改返回函数的 prototype 为绑定函数的 prototype，实例就可以继承绑定函数的原型中的值<br> fBound.prototype = this.prototype;<br> return fBound<br>}</p>
+</li>
+<li><p>手搓快排的实现，及如何优化，方法有哪些？<br>function quickSort(arr) {<br> if (arr.length &lt; 1) return arr</p>
+<p> let midIndex = Math.floor(arr.length / 2)<br> let midNum = arr.splice(midIndex, 1)[0]<br> let left = []<br> let right = []</p>
+<p> for(let i = 0; i &lt; arr.length; i++) {</p>
+<pre><code>if (arr[i] &lt; midNum) left.push(arr[i])
+else right.push(arr[i])</code></pre><p> }</p>
+<p> return quickSort(left).concat(midNum, quickSort(right))<br>}<br>优化的主要手段为选取更合适的中点。数组元素随机，取固定基准。数组元素已排序，取随机基准。更好的方法是将数组开头、中间和结尾的三个元素作比较，取中间的数作为基准。</p>
+</li>
+<li><p>localstorage如何做到不同标签页下的共享？<br>类似的东西有三种。其数据都是通过键值对存储的。<br>cookie是服务器通过set-cookie字段设置的，且可设置过期时间，在http请求中也是附带上的，大小为4k左右。若是浏览器自己设置的cookie，则关闭浏览器后失效。cookie可通过设置httponly标记避免被JavaScript操作。一般可通过document.cookie进行操作。<br>sessionStorage是仅在当前会话下有效，关闭页面或浏览器后失效，不参与向服务器发送的请求，大小为4-5M。可通过window.sessionStorage或sessionStorage操作。<br>localStorage若不被清除则一直存在，不参与向服务器发送的请求，大小为4-5M。可通过window.localStorage或localStorage操作。<br>常用API为setItem()、getItem()、removeItem()、clear()、key()、length。<br>与之相关的事件为storage事件。该事件在本地存储（localStorage或sessionStorage）改变时触发。</p>
+</li>
+</ol>
+<p>值得一提的是，与cookie一样，localStorage也有同源策略的保护，不同源localStorage不可交互。若要做到不同标签页共享，常常采用window.postMessage + iframe实现。<br>postMessage方法语法为otherWindow.postMessage(message, targetOrigin[, transfer])。otherWindow为其他窗口的一个引用，如iframe的contentWindow属性、window.open的返回对象或通过方括号语法选中的window.iframes。message为所要发送的信息。targetOrigin为接受窗口的URI或”*”，用于指定接受窗口。transfer可传递某些对象，将这些对象的所有权转移给接收方，同时自己不再保有这些对象的所有权。<br>在接收窗口中应在window上定义message事件，在该窗口接受到信息后触发。为了安全起见，只有确定要接受消息的窗口才定义该事件，否则不要定义该事件。未定义该事件的窗口收到信息后默认丢弃。<br>应当注意的是，以上方法在普通的浏览器中有效，在safari浏览器中，父页面无法向iframe中的跨域页面传递消息，因此只能通过在跳转链接中添加信息，在接受页面在将信息从链接中解析出来，safari浏览器支持64k长度的链接，因此应该够用了。并且safria 隐身模式下，localstorage是被禁止的，相关操作直接报错。浏览器种类通过navigator.userAgent判断。</p>
+<ol start="7">
+<li>小程序的http封装？<br>let baseURL</li>
+</ol>
+<p>// 发送请求<br>function ajax(config = {}) {<br>    // 配置config默认信息<br>    config.url += baseURL<br>    config.contentType = ‘json’</p>
+<pre><code>return new Promise((resolve, reject) =&gt; {
+    config.fail = err =&gt; {
+        reject(err)
+    }
+
+    config.success = res =&gt; {
+        // 可在此添加状态判断信息
+        resolve(res)
+    }
+    wx.request(config)
+})</code></pre><p>}</p>
+<ol start="8">
+<li>web worker间的通信？方法有哪些？<br>通过new Worker(‘test.js’)可创建一个执行test.js的worker，主线程通过Worker.postMessage向子线程传递信息（反之亦可），其参数与window.postMessage类似，但无需指定接受对象。子线程和主线程都通过通过Worker.onmessage监听该事件。子线程完成任务后，主线程可通过Worker.terminate关闭子线程。应用有浏览器向服务器轮询以获取服务器的最新状态，这样的进程可放在worker当中。</li>
+<li>css 选择器的优先级<br>!important &gt; 行内样式 &gt; #id &gt; 伪类 &gt; 属性选择器 &gt; .class &gt; 伪元素 &gt; tag &gt; * &gt; 继承 &gt; 默认</li>
+<li>splice,split,slice的区别？<br>splice用于在原数组上进行添加和删除，返回删除的数组。第一个参数为开始删除的位置，必须。第二个参数为删除的数量，可为0，必须。第三个参数为向数组添加的元素，可选。<br>slice用于截取数组，返回截取到的数组，不改变原数组。第一个参数为开始截取的下标，必须。第二个参数为截取结束的下标，可选。<br>split用于将字符串转化为字符串数组，用逗号隔开。第一个参数为开始分割的位置，为一字符串或正则表达式，必须。第二个参数为返回数组的最大长度。</li>
+<li>0.1+ 0.2 问题<br>起因是因为0.1和0.2化为二进制后都是循环小数，JavaScript采用64bit存储方式存储，所以有精度误差。解决0.1 + 0.2 !== 0.3的方法是设置精度误差，在一定误差范围内可认为两数相等。</li>
+<li>js里面的数值number如何进行存储，大小是多少，4byte如何分配的<br>number类型采用64位8字节（64bit、8byte）存储，都是双精度小数。JavaScript能够安全使用的有符号安全大整数（指能进行运算的数），并不是2^64 -1，而是2^53 -1。这是因为number类型的64位存储结构是这样的：前52位为数字有效位（正确化简后二进制小数第一位总为1，因此可省略1位，实际为53位），后11位指数位以及1位符号位。</li>
+<li>this指向问题，闭包中this的指向问题<br>一句话this总指向函数调用的上下文。闭包中this总指向调用的地方，因此可能出现</li>
+<li>伪类常用的种类？伪类和伪元素的区别？<br>伪类<br>:hover :visited :focus :active<br>tag:first-child 选中是父元素第一个子元素的tag标签。<br>tag:last-child 选中是父元素最后一个子元素的tag标签。<br>:after 在元素之后添加内容，与::after类似，但不同的是该伪类直接在选中元素后面添加内容，而不是作为选中元素的最后一个子元素。<br>:before 在元素之前添加内容，与::before类似，但不同的是该伪类直接在选中元素前面添加内容，而不是作为选中元素的第一个子元素。<br>:enabled 匹配每个已启用的元素，多为表单元素<br>:disabled 禁用表单元素<br>:checked 选中状态的复选框或单选框<br>:nth-of-type(an+b) 安装an+b的模式选中元素（n为从0开始的整数）。例如3n+1表示选中第1、4、7、10、···个元素。<br>伪元素<br>::before 创建一个新元素，作为选中元素的第一个子元素。可通过content属性添加内容。<br>::after 创建一个新元素，作为选中元素的最后一个子元素。可通过content属性添加内容。<br>::first-line 规定选中元素第一行文本的样式。只能在匹配到块状元素时使用。<br>::first-letter 规定选中元素第一行第一个字母的样式。<br>::selection 规定被用户高亮选中部分的样式。<br>伪类为一种选择器，而伪元素为真实存在的元素，可为其添加状态。  </li>
+<li>向面试官问些想问的问题 ， 等结果（十分钟后HR小姐姐打电话说下接下来二面的时间问题）一面视频面试 2个小时</li>
+</ol>
+<h1 id="头条二面"><a href="#头条二面" class="headerlink" title="头条二面"></a>头条二面</h1><ol>
+<li><p>简单介绍自己</p>
+</li>
+<li><p>说说自己做过的项目</p>
+</li>
+<li><p>关于我第一个项目开发的流程及难点</p>
+</li>
+<li><p>将到http协议，http1.0,http1.1,http2.0之间的区别<br>http1.0<br>（1）http1.0中请求完成后即断开tcp连接，发向同一服务器的不同请求会重复建立tcp连接，服务器也不会保存之前请求的状态。<br>（2）线头阻塞（Head Of Line Block）问题，即若引服务器正忙等原因导致第一个请求未处理，那么后续的请求会被阻塞。<br>http1.1<br>（1）为了解决以上问题实现了长连接，即加入了Connection字段，其设置keep-alive后哪怕请求结束后，http连接也不会断开。若要断开连接，需客户端在请求中将该字段设为false来告知服务器关闭连接。<br>（2）在长连接基础上，1.1还引入了管线化（pipelining），即客户端可并行发送多个请求，服务端会按顺序返回请求结果，以保证客户端能分辨出每次请求的结果。这样做的意义是将先入先出的队列由客户端（请求队列）转移到了服务器端（响应队列）。但即便如此，还是没有两个请求是并行的，所以线头阻塞问题还是没有解决，且管线化还有很多其他的问题，因此一般浏览器都是默认关闭管线化的。为了实现真正的并行请求和响应，现阶段各大浏览器厂商的解决方法一般为开启多个tcp连接，在不同连接上进行http请求和响应。<br>（3）加入了缓存处理（cache-control）.<br>（4）支持断点传输，通过Range字段指定文件传输的范围实现。<br>（5）增加了HOST字段，使同一服务器能够建立多个Web站点。<br>http2.0<br>（1）进行了二进制分帧，在应用层和传输层中间加入了二进制分帧层，提高了传输效率。<br>（2）实现了多路复用。一个tcp连接可承载任意多个双向数据流，每个请求对应一个数据流，数据拆分为帧进行发送，每个帧头部都有流标识id，这些帧可以乱序发送，再根据流标识id进行重组。为避免关键请求被阻塞，可为数据流设置优先级，优先级高的数据流优先处理。解决了线头阻塞。<br>（3）头部压缩。为了减少请求头的大小，客户端和服务端分别维护相同的静态字典（常用头部名称及值）和动态字典（可动态添加内容）。通过传输序号和字典查询再加上合适的压缩算法可大大减少头部大小。<br>（4）服务器推送。服务器可主动向客户端推动内容。</p>
+</li>
+<li><p>http中自己常见的状态码，说完200，301,302,307，400,403，404,500,503等等。协商缓存与强缓存的区别。<br>状态码参照 <a href="http://www.runoob.com/http/http-status-codes.html" target="_blank" rel="noopener">http://www.runoob.com/http/http-status-codes.html</a><br>200 正确处理请求，并返回响应。<br>204 服务器请求处理成功，但没有可返回的资源。一般用于客户端向服务器发送信息。<br>206 客户端发送范围请求，请求资源的一部分，服务器返回部分资源。</p>
+</li>
+</ol>
+<p>301 请求的资源的URI已永久更改，以后应该用更改后URI。浏览器会自动定向到新的URI。<br>302 临时移动，客户端可继续使用原有的URI。<br>303 资源临时移动，与302类似，但需使用GET和POST继续访问。<br>304 资源未修改，可直接使用本地缓存。<br>307 资源临时移动，与302类似，但需使用GET继续访问。</p>
+<p>400 请求报文语法错误。<br>401 要求用户身份验证。<br>403 服务器理解请求，但拒绝执行资源访问。<br>404 没有符合条件的资源。</p>
+<p>500 服务器内部错误。<br>503 服务器处于维护或过载状态，无法处理请求。<br>缓存分为两种，一种为强缓存，一种为协商缓存。浏览器第一次请求发生后再次请求时，会先获取该资源缓存的header信息，根据缓存的header信息判断是否命中强缓存，若命中则直接返回缓存文件，本次请求不会与服务器发送通信，但状态码为200。若没有命中强缓存，浏览器会发送请求到服务器，请求会携带资源缓存的header中的一些信息，再由服务器自行判断相关信息是否命中协商缓存，若命中则返回304，返回新的header信息以更新缓存中的header信息，并告知浏览器可直接从缓存中获取该资源。否则返回最新的资源内容。<br>与强缓存相关的字段有两个。<br>1.expires：是http1.0的标准，其值为一GMT格式的时间字符串，若发送请求的时间在expires之前，那么本地缓存有效，否则就会发送请求到服务器来获取资源。<br>2.cache-control：是http1.1的标准。主要是利用该字段的max-age值来判断，该值加上第一次资源请求的时间计算出一个资源有效时间。若发送时间在该资源有效时间之内，则本地缓存有效。否则发送请求。cache-control还有几个常用的值。<br>    （1）max-age：是一个数字，用于配合资源请求时间计算资源过期时间。<br>    （2）no-cache：不使用本地缓存，需使用协商缓存。先与服务器通信确认资源是否被修改，若之前的响应中存在ETag（服务器生成的资源的唯一标识，资源更改，ETag也更改），则请求时会与服务器验证资源是否被修改，若资源未更改，则可避免重新下载。<br>    （3）no-store：禁用浏览器缓存数据，每次请求该资源都需要重新发送请求。<br>    （4）public：该资源可被所有用户缓存，包括CDN中间代理服务器和终端用户。<br>    （5）private：只允许终端用户缓存，不允许CDN等中级缓存器对其进行缓存。<br>注意：若两字段同时存在，cache-control的优先级高于expires。<br>协商缓存涉及到的字段主要有两组（四个），这两组都是成对出现的，即第一次请求头带上某个字段，后续的请求会带上相对应的请求字段。<br>1.Last-Modified、If-Modified-Since：两者均为GMT格式的时间字符串。第一次请求返回的响应头中含有Last-Modified字段，表示该资源在服务器上最后的修改时间。之后的请求同一资源时，头部中会含有If-Modified-Since字段，其值与Last-Modified一致。服务器收到请求后，将资源的最后修改时间与If-Modified-Since做比较，若修改过，则返回最新的资源，并在响应头中更新Last-Modified的时间。否则即为协商缓存，返回304，浏览器从缓存中加载资源。<br>2.Etag、If-None-Match：这两个值为服务器生成的每个资源的唯一标识符，只要资源有变化就改变这个值。判断流程与上一组类似，只不过是通过Etag判断资源是否被修改。不同的是，当服务器返回304时，响应头中还会包含Etag，哪怕资源没有变化。<br>注意：Last-Modified与Etag共存的情况下，Etag的优先级高于Last-Modified。</p>
+<ol start="6">
+<li><p>聊到跨域问题，解决跨域的几种方法？手搓代码封装一个jsonp？跨域资源共享（CORS），如何设计及处理？<br>一般有四种解决方法。</p>
+</li>
+<li><p>flash（废弃）</p>
+</li>
+<li><p>在同源域名下假设一个代理服务器用于转发请求（需额外开发）。JavaScript请求将请求发送到代理服务器，代理请求完毕后再将结果返回。</p>
+</li>
+<li><p>JSONP。本质是利用了浏览器允许跨域引用JavaScript资源。具体实现为添加一script元素，其src为请求链接，该链接会返回一个JavaScript代码块，该代码块一般为一函数调用，该函数传入的实参即为请求的数据。在该script元素之前声明一和返回的函数的同名函数，并在该函数中进行数据处理。缺点是这种方法只能使用GET方法，且要求编写页面的人对后端返回的数据也有很全面的了解才能正确编写数据处理函数，违背了前后端分离原则。</p>
+</li>
+<li><p>CORS（Cross Origin Resourse Share）。前端实现与一般的ajax请求并无区别，浏览器会自动进行信息补全。后端实现比较关键，只有服务器实现了CORS接口，才能跨域通信。CORS请求一般分为两种，一种是简单请求，即请求方法为GET、POST、HEAD其中的一种；另一种为复杂请求，所有不属于简单请求的就是复杂请求。<br>（1）简单请求的实现：JavaScript发送一个跨域请求后，浏览器会自动在请求头中加上一origin字段，用于标记该请求来自哪个域。在服务器接受到请求后，会先通过origin字段判断是否响应该请求，若不符合要求，则会返回一不包含任何有用信息的响应，浏览器收到响应后确定响应头中不含Access-Control-Allow-Origin，便会丢弃该响应并抛出一个错误。若响应，则会在返回的响应中加上Access-Control-Allow-Origin字段。浏览器收到响应后，会判断origin字段是否在Access-Control-Allow-Origin的允许范围内，若不在，则浏览器会丢弃该响应，若在，浏览器才会将响应给脚本。综上所述，简单跨域请求的关键在于让服务器返回一个正确的、能通过浏览器验证的Access-Control-Allow-Origin。简单请求说白了就是表单请求。<br>（2）复杂请求的实现：先发送域请求，包含origin和Access-Control-Request-Method（后续跨域请求会包含哪些请求方法）字段，服务器先根据域请求判断是否要对该跨域请求进行响应。若不同意请求，会返回一个不包含任何跨域请求头相关信息的响应。若同意请求，则后续部分和简单请求一致。</p>
+</li>
+<li><p>css盒模型的相关知识<br>盒模型的四部分、BFC相关知识。</p>
+</li>
+<li><p>prototype原型的相关问题，以及“<strong>proto</strong>”的指向等问题，原型链的相关知识<br>实例的<strong>proto</strong>属性指向原型，constructor属性指向构造函数。只有函数具有prototype属性，指向原型。构造函数的<strong>proto</strong>指向Function.prototype。原型的constructor指向构造函数。</p>
+</li>
+<li><p>手搓双向绑定的三种封装实现。<br>小程序是数据单向绑定。即定义一个对象作为状态模型，修改状态模型会影响视图变化，而视图变化无法影响状态模型。状态模型通过事件进行修改。状态模型修改视图遵从以下几个步骤：</p>
+</li>
+<li><p>识别哪个元素绑定了相应的对象。</p>
+</li>
+<li><p>监控对象的变化。</p>
+</li>
+<li><p>将变化绑定到视图上。<br>（1）发布-订阅者模式<br>思路大致为使用data自定义属性在HTML中声明绑定。所有绑定起来的JavaScript对象以及DOM元素都将订阅一个发布者对象。由发布者对象对JavaScript对象和DOM元素进行监听，若两者有任何变化发生，则有发布者对象进行处理后，广播到所有与该DOM对象或JavaScript对象绑定的元素或对象。<br>（2）脏值查询（Angular.js）<br>封装一个Socpe类，用于保存数据的新旧值，并且在其中定义回调函数，若新旧值不一样，则触发该回调函数，进行DOM操作并对数据实时进行修改。<br>（3）数据劫持（Vue.js）<br>整个实现由三部分组成，分别是Observer、Compile和Watcher。通过Object.observe()在对象的每个属性上都绑定上监听器，作为Observer。通过Compile来编译和解析模板指令。最终利用Watcher搭建起Observer和Compile之间的通信桥梁。<br>实际上，Vue.js的双向绑定是通过数据劫持结合发布者-订阅者模式来实现的。整个实现大致有三步：</p>
+</li>
+<li><p>实现一个监听器Observer，用来劫持并监听所有属性，如果有变动的，就通知订阅者。</p>
+</li>
+<li><p>实现一个订阅者Watcher，可以收到属性的变化通知并执行相应的函数，从而更新视图。</p>
+</li>
+<li><p>实现一个解析器Compile，可以扫描和解析每个节点的相关指令，并根据初始化模板数据以及初始化相应的订阅器。</p>
+</li>
+<li><p>promise的相关问题，当多条异步请求进行时，如何在所有异步请求完成后，再进行其他的同步的任务？有没有相关的api可以实现呢？<br>Promise.all([])</p>
+</li>
+<li><p>A和B玩抛硬币，A和B轮流抛一枚硬币，谁先抛到正面谁就获胜并结束游戏，硬币两面均匀。A先抛，请问A获胜的概率是多少？<br>2/3</p>
+</li>
+<li><p>常用布局有哪些？手搓实现一个自适应搜索框，输入框部分宽度自适应，搜索按钮宽度固定（双飞翼圣杯、flex）<br>常用布局<br>（1）水平居中：子元素为行内元素inline + 父元素设置text-align: center。定宽的话就用margin: auto，不定宽的话就设置display: inline变成行内元素然后在处理。<br>（2）垂直居中：子元素为行内元素，父元素设置line-height与高度一致。子元素为块状元素，子元素设置为绝对定位，设置top和bottom均为0，父元素设置相对定位。<br>（3）单列布局：略<br>（4）双列布局：利用margin在左边或者右边留出一定空白，然后让另一元素通过absolute或float浮动到另一侧，注意要保证margin和另一元素宽度一样，不然会有留白。<br>（5）自适应两列布局：父元素固定宽度，一个元素设置与父元素等宽，另一元素设置浮动或定位，宽度不定。这样看上去就是自适应的宽度布局。<br>（5）圣杯布局：三列布局，中间宽度自适应，两边定宽，增加父元素宽度，中间元素宽度变化，两侧元素不变。父元素定义左右padding值为左右两列元素的宽度。三元素都float到同一方向，并加上相对定位。之后定义左侧元素margin-left: -100%，定位left为该元素宽度的负值。中间元素定义宽度100%，右侧元素定义margin-left和定位right均为该元素宽度的负值。注意给父元素清浮动，且三元素的顺序为main在最前，然后是left，然后是right。<br>（6）双飞翼布局：双飞翼布局与三栏布局大部分一样，三栏全部float浮动，但左右两栏加上负margin让其跟中间栏div并排，以形成三栏布局。但不同的是，其在main里加了一个子div用于显示内容，并通过设置该子div的margin值为两测两栏留出空白。父元素无需添加padding属性，左右div也不需要加上相对定位。<br>（7）flex布局：块状元素使用flex，行内元素使用inline-flex。flex盒子中，float、clear、vertical-align失效。<br>flex盒子有六个属性。<br>1.flex-direction：定义项目排列的方向。默认值为从左到右排列（row）。<br>2.flex-wrap：若一条轴线排不下，如何换行。默认为不换行（nowrap）。<br>3.flex-flow：flex-direction和flex-wrap的简写。<br>4.justify-content：在主轴上元素如何对齐。默认为左对齐（flex-start）。该属性还可指定为space-between，即横轴两端各一个元素，中间均匀分布。<br>5.align-items：在竖轴上元素如何对齐。默认为拉伸（stretch），即若项目未定义高度或为auto，则将充满整个容器。<br>6.align-content：若有多个横轴（即有多行元素），在竖轴上应该如何排列。默认为拉伸（stretch），即各行相加充满整个容器。还可指定为space-between，见上。<br>flex盒子的子元素有六个属性。<br>1.order：定义项目的排列顺序，数值越小越靠前。默认为0。<br>2.flex-grow：定义若存在空余空间，项目的放大比例。默认为0，即不放大。<br>3.flex-shrink：定义若空间不足，项目的缩小比例。默认为1，即如果空间不足，该项目将缩小。<br>4.flex-basis：定义项目占主轴的实际宽度，浏览器根据此属性计算主轴是否还有空余空间。默认为auto。<br>5.flex：为flex-grow，flex-shrink和flex-basis的简写。<br>6.align-self：定义该属性可覆盖align-items属性，定义项目与其他项目不同的对齐方式。<br>注意：vw为窗口宽度的百分比单位，vh为窗口高度的百分比单位。</p>
+</li>
+<li><p>手搓实现给定字符串，统计字符串中出现最多的字母和次数，给出部分模板代码，自己手搓进行实现<br>这也配叫算法题？？？</p>
+</li>
+<li><p>CDN是什么？<br>全称Content Delivery Network，即内容分发网络。CDN是将源站内容分发至最接近用户的节点，使用户可就近取得所需内容，提高用户访问的响应速度和成功率。解决因分布、带宽、服务器性能带来的访问延迟问题，适用于站点加速、点播、直播等场景。通过在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络，CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上。</p>
+</li>
+<li><p>JavaScript垃圾清除机制<br>标记清除和引用清除。现在一般用的都是标记清除，因为引用清除可能会有循环引用的问题出现。标记清除指</p>
+</li>
+<li><p>this指向<br>this总是指向包含它的函数被调用时所处的环境。一般分为以下四种情况：<br>（1）全局环境：web下this指向window。<br>（2）对象环境：在一个对象中调用包含this的函数，this指向该对象。<br>（3）构造函数环境：this指向新创建出的实例。<br>（4）事件对象：this指向触发事件的DOM节点。</p>
+</li>
+<li><p>其他问题也有些忘记了</p>
+</li>
+<li><p>结束，向面试官问些想问的问题，等结果（一小时左右leader的三面就来了）二面视频面试2个小时左右</p>
+</li>
+</ol>
+<h1 id="头条三面"><a href="#头条三面" class="headerlink" title="头条三面"></a>头条三面</h1><p>1.简单的自我介绍；</p>
+<p>2.介绍自己的项目；</p>
+<p>3.自己在项目开发中遇到的挑战都是那些？</p>
+<p>4.如何进行的前端学习？</p>
+<p>5.你印象最深的文章都是那些？</p>
+<p>5.从0到1整个web开发，如果你来负责，你会怎么做？感觉这个问题真的很有深度，我大概先分析这个web 站点的类型，根据不同的复杂程度或者仅仅管理员的后台界面，选择不同策略，之后从技术选型开始，比如react相关生态，Vue相关生态，后台UI组件的选择,css预处理器的选择less or sass等等，</p>
+<p>然后考虑是否自己搭建架构，还是省事用官方的Cli脚手架工具。</p>
+<p>搭建基本的架构，比如http的封装，css样式的统一，比如淘宝官方的统一样式库都可以进行借鉴和二次开发，然后，基本小组件的封装，比如弹框，按钮，loding状态等等可复用性的组件</p>
+<p>之后就是开始协调项目团队进行任务分配，进行相关的工具进行项目管理，使用git进行版本控制，协调组员的分离配合开发，避免重复性工作或者冲突。大概聊到差不多后，leader说了句，你忘了性能啊？</p>
+<p>然后我就谈下如何进行性能优化，</p>
+<blockquote>
+<p> 1.减少http请求 </p>
+<p>2.对相关的静态资源比如img,svg等放在服务端，或cdn上面.</p>
+<p>3.对图片进行懒加载 </p>
+<p>4.减少DOM操作 </p>
+<p>5.避免更多的重绘或回流 </p>
+<p>6.进行代码压缩等等</p>
+</blockquote>
+<ol start="6">
+<li>你实习的目标是什么？</li>
+<li>你每周上班时间能有多久？（加班呗，很正常）</li>
+<li>一定要有创新能力，很重要</li>
+<li>让你学习 React 你能在多久时间内能上手开发？</li>
+</ol>
+<p>10.其他的问题也忘记了，一些学校与公司实习的问题</p>
+<p>11.整个过程语速比较快，丝毫不拖泥带水</p>
+<p>12.问我有什么想问的问题？大概聊聊业务处理跟学习时间的平衡。</p>
+<p>13 等HR面试  （三面大概一个多小时）</p>
+<h1 id="头条四面（HR）"><a href="#头条四面（HR）" class="headerlink" title="头条四面（HR）"></a>头条四面（HR）</h1><p>HR也问了很多相关项目的问题，个人学习，性格，优缺点？什么其他的很多很多，感觉很nice，也很随缘。三观一般都没啥问题吧！</p>
+<ol>
+<li>稳定排序与不稳定排序<br>参考链接：()[<a href="https://www.cnblogs.com/codingmylife/archive/2012/10/21/2732980.html]" target="_blank" rel="noopener">https://www.cnblogs.com/codingmylife/archive/2012/10/21/2732980.html]</a><br>冒泡、选择、插入、快排、归并、基数、希尔、堆排<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 交换两元素的函数</span></span><br><span class="line"><span class="keyword">let</span> swap = <span class="function">(<span class="params">arr, i, j</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> temp = arr[i];</span><br><span class="line">    arr[i] = arr[j];</span><br><span class="line">    arr[j] = temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>（1）冒泡排序</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> bubble = <span class="function">(<span class="params">arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = arr.length; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; i; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                swap(arr, j, j + <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（2）选择排序</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> select = <span class="function">(<span class="params">arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="keyword">let</span> min = i; <span class="comment">// 最小元素的下标</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> j = i; j &lt; arr.length; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[j] &lt; arr[min]) &#123;</span><br><span class="line">                min = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(min !== i) &#123;</span><br><span class="line">            swap(arr, i, min);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（3）插入排序</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> insert = <span class="function">(<span class="params">arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> ans = [arr[<span class="number">0</span>]];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">let</span> j = <span class="number">0</span>; j &lt; ans.length; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(ans[j] &gt;= arr[i]) &#123;</span><br><span class="line">                ans.splice(j, <span class="number">0</span>, arr[i])</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(j === ans.length - <span class="number">1</span>) &#123;</span><br><span class="line">                ans.push(arr[i])</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（4）快速排序</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 阮一峰老师的版本</span></span><br><span class="line"><span class="keyword">let</span> quick = <span class="function">(<span class="params">arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(arr.length &lt;= <span class="number">1</span>) <span class="keyword">return</span> arr;</span><br><span class="line">    <span class="keyword">let</span> midIndex = <span class="built_in">Math</span>.floor(arr.length / <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">let</span> midNum = arr.splice(midIndex, <span class="number">1</span>)[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">let</span> left = []</span><br><span class="line">    <span class="keyword">let</span> right = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(arr[i] &lt; midNum) left.push(arr[i]);</span><br><span class="line">        <span class="keyword">else</span> right.push(arr[i])</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> quick(left).concat([midNum], quick(right))</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 其他版本</span></span><br><span class="line"><span class="keyword">let</span> quick = <span class="function">(<span class="params">arr</span>) =&gt;</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（5）归并排序</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> merge = <span class="function">(<span class="params">arr</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(arr.length &lt; <span class="number">2</span>) <span class="keyword">return</span> arr;</span><br><span class="line">    <span class="keyword">let</span> middle = <span class="built_in">parseInt</span>(arr.length / <span class="number">2</span>);</span><br><span class="line">    <span class="keyword">let</span> left = arr.slice(<span class="number">0</span>, middle);</span><br><span class="line">    <span class="keyword">let</span> right = arr.slice(middle);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> sort = <span class="function">(<span class="params">left, right</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> ans = [];</span><br><span class="line">        <span class="keyword">while</span>(left.length &amp;&amp; right.length) &#123;</span><br><span class="line">            <span class="keyword">if</span>(left[<span class="number">0</span>] &lt; right[<span class="number">0</span>]) ans.push(left.shift())</span><br><span class="line">            <span class="keyword">else</span> ans.push(right.shift())</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans.concat(left, right);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> sort(merge(left), merge(right));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>（6）基数排序</p>
+<ol start="2">
+<li><p>hash算法的实现<br>hash算法的应用一种是加密，一种是哈希表。<br>hash算法的作用是将任意长度的数据映射为一唯一的长度固定的短数据串，形成一一对应的关系。任意能实现该功能的算法都统称为hash算法。<br>判断hash算法好坏的标准有两个：不可逆性及无冲突性。不可逆性指无法由加密后的数据推算出加密前的数据。无冲突性指任意两个不同的数据串经过映射后都具有唯一的值。</p>
+</li>
+<li><p>rem、em实现vh和vw<br>浏览器默认font-size为16px。<br>em根据父元素的font-size进行换算。rem根据根元素的font-size进行换算。<br>没找到标准答案，不过找到一大堆关于rem配合vh、vw布局的文章。</p>
+</li>
+<li><p>meta标签的主要内容及用法<br>meta标签中的数据是页面的元信息，虽然不可见但依然很重要。</p>
+</li>
+<li><p>animation的写法</p>
+</li>
+<li><p>媒体查询的写法</p>
+</li>
+<li><p>js中数组map和forEach的区别<br>map会创建一个新数组，接收一个函数，新数组的所有元素都是由旧数组中的元素产生的。<br>forEach会直接修改原数组。</p>
+</li>
+<li><p>js中的大数计算</p>
+</li>
+<li><p>Vue源码 Compile 数据劫持 依赖收集 虚拟DOM</p>
+</li>
+<li><p>移动端项目优化</p>
+</li>
+<li><p>移动端点透问题<br>PC上的页面一般绑定的是鼠标事件，触发顺序为mousedown -&gt; mouseup -&gt; click。<br>移动端页面一般绑定的是触摸事件，触发顺序为touchstart -&gt; touchmove -&gt; touchend。<br>手机端上的click事件触发会有300ms的延迟。原因是浏览器在touchend后会等待300ms判断是否有双击行为。<br>许多移动端js库中都会有tap事件，这是一个模拟事件，无延迟。<br>点透问题一般出现在有蒙版的场景中。给蒙版关闭按钮绑定tap事件，在点击关闭蒙版后，蒙版消失，但click事件未触发。300ms后，click触发，但此时的e.targe为蒙版下面的元素。</p>
+</li>
+<li><p>点透问题的解决方法<br>（1）给关闭效果加上300ms的动画。<br>（2）设置css中的pointer-event属性为none，元素及其子元素不再是鼠标事件的目标。</p>
+</li>
+<li><p>从输入Url到打开页面的全过程</p>
+</li>
+<li><p>CRP（关键路径渲染）及优化</p>
+</li>
+<li><p>HTTP缓存机制<br>大致分为两种，强缓存与协商缓存。<br>在浏览器第一次请求某个资源后再次请求时，会先获取资源的header信息，并据此判断是否命中强缓存。若命中，则直接使<br>用，不发送请求，但状态码为200。若没命中，则发送请求，并根据响应中的header判断是否命中协商缓存，若命中，返回304<br>并更新本地缓存中的header信息。否则返回最新的资源内容。</p>
+</li>
+<li><p>XSS及CSRF如何防范</p>
+</li>
+<li><p>TCP三次握手/四次挥手<br>TCP的六种标志位<br>（1）SYN：建立联机synchronous<br>（2）ACK：确认acknowledgement<br>（3）PSH：传送push<br>（4）FIN：结束finish<br>（5）RST：重置reset<br>（6）URG：紧急urgent<br>（7）Sequence number：顺序号码<br>（8）Acknowledge number：确认号码<br>客户端TCP状态迁移<br>CLOSED  SYN_SEND  ESTABLISHED  FIN_WAIT_1  FIN_WAIT_2  TIME_WAIT  CLOSED<br>服务器状态迁移<br>CLOSED  LINSTEN  SYN_RECEIVED  ESTABLISHED  CLOSE_WAIT  LAST_ACK  CLOSED<br>一、三次握手<br>（1）客户端主动发送SYN包到服务器，并进入SYN_SEND状态，等待服务器确认。<br>（2）服务器收到SYN包，确认后发送SYN + ACK包，进入SYN_RECEIVED状态。<br>（3）客户端收到SYN + ACK包，向服务器发送ACK包，之后服务器和客户端都进入ESTABLISHED状态。<br>二、四次挥手<br>（1）客户端发送FIN包到服务器，进入FIN_WAIT_1状态。<br>（2）服务器收到FIN包后，发送ACK包，进入CLOSE_WAIT状态。<br>（3）客户端收到ACK包后，进入FIN_WAIT_2状态，同时等待服务器发送释放报文。<br>（4）服务器发送完最后的数据后，发送FIN + ACK包作为释放报文，并进入LAST_ACK状态。<br>（5）服务器收到释放报文后，发送ACK包到服务器表示确认接收，并进入TIME_WAIT状态。<br>（6）服务器收到ACK报文后，立即释放TCP链接，进入CLOSED状态。<br>（7）客户端在等待一段时间后，释放TCP链接，进入CLOSED状态。</p>
+</li>
+<li><p>ARP地址解析协议</p>
+</li>
+<li><p>回流及重绘的优化</p>
+</li>
+<li><p>DNS查询过程</p>
+</li>
+<li><p>域名发散与域名收敛</p>
+</li>
+<li><p>堆内存与栈内存</p>
+</li>
+<li><p>深浅拷贝</p>
+</li>
+<li><p>WebSocket</p>
+</li>
+<li><p>TCP流量控制及拥塞处理</p>
+</li>
+<li><p>进程与线程的区别</p>
+</li>
+<li><p>MVVM与MVC的区别</p>
+</li>
+<li><p>Content-type的可能值</p>
+</li>
+<li><p>手撸JSONP</p>
+</li>
+<li><p>设计用户登录的具体过程</p>
+</li>
+<li><p>position的值及应用</p>
+</li>
+<li><p>垂直居中及水平居中</p>
+</li>
+<li><p>BFC</p>
+</li>
+<li><p>盒模型<br>可通过box-sizing指定，可能的值有 content-box(默认) | padding-box(已移除) | border-box<br>一般盒模型：指定宽度为内容宽度，总宽度 = width + padding + border + margin<br>IE盒模型：指定宽度为内容宽度 + 内边距宽度 + 边框宽度，相当于border-box，总宽度 = width + margin</p>
+</li>
+</ol>
+<ol>
+<li>vue<br> 记得查手册</li>
+<li>tcp握手挥手</li>
+<li>缓存机制<br>应表会传网数物<br>应传互网</li>
+<li>计网小抄</li>
+<li>盒模型</li>
+</ol>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Mett Li</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#头条一面"><span class="nav-number">1.</span> <span class="nav-text">头条一面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#头条二面"><span class="nav-number">2.</span> <span class="nav-text">头条二面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#头条三面"><span class="nav-number">3.</span> <span class="nav-text">头条三面</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#头条四面（HR）"><span class="nav-number">4.</span> <span class="nav-text">头条四面（HR）</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mett Li</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
