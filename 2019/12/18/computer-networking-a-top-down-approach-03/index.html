@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="LeetCode,js,">
+  <meta name="keywords" content="计算机网络,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 代码编写12345678910">
-<meta name="keywords" content="LeetCode,js">
+<meta name="description" content="本章详细介绍了运输层相关的知识, 从 TCP 和 UDP 运输层协议入手, 主要探讨如下两个问题：  两个实体如何在一种会丢失或损坏数据的媒体上进行可靠通信? 如何控制运输层实体的传输速率以避免网络拥塞, 以及如何从拥塞中恢复过来?  概述运输层的层级运输层介于应用层之下, 网络层之上。 运输层提供的功能运输层协议为运行在不同主机上的应用进程之间提供了逻辑通信功能。所谓逻辑通信, 是指应用进程通过">
+<meta name="keywords" content="计算机网络">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js中的数字">
-<meta property="og:url" content="http://yoursite.com/2019/09/11/js-number/index.html">
+<meta property="og:title" content="计算机网络：自顶向下方法读书笔记（三）">
+<meta property="og:url" content="http://yoursite.com/2019/12/18/computer-networking-a-top-down-approach-03/index.html">
 <meta property="og:site_name" content="敝舍">
-<meta property="og:description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 代码编写12345678910">
+<meta property="og:description" content="本章详细介绍了运输层相关的知识, 从 TCP 和 UDP 运输层协议入手, 主要探讨如下两个问题：  两个实体如何在一种会丢失或损坏数据的媒体上进行可靠通信? 如何控制运输层实体的传输速率以避免网络拥塞, 以及如何从拥塞中恢复过来?  概述运输层的层级运输层介于应用层之下, 网络层之上。 运输层提供的功能运输层协议为运行在不同主机上的应用进程之间提供了逻辑通信功能。所谓逻辑通信, 是指应用进程通过">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-12T11:29:33.727Z">
+<meta property="og:updated_time" content="2019-12-18T03:21:44.580Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="js中的数字">
-<meta name="twitter:description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 代码编写12345678910">
+<meta name="twitter:title" content="计算机网络：自顶向下方法读书笔记（三）">
+<meta name="twitter:description" content="本章详细介绍了运输层相关的知识, 从 TCP 和 UDP 运输层协议入手, 主要探讨如下两个问题：  两个实体如何在一种会丢失或损坏数据的媒体上进行可靠通信? 如何控制运输层实体的传输速率以避免网络拥塞, 以及如何从拥塞中恢复过来?  概述运输层的层级运输层介于应用层之下, 网络层之上。 运输层提供的功能运输层协议为运行在不同主机上的应用进程之间提供了逻辑通信功能。所谓逻辑通信, 是指应用进程通过">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/09/11/js-number/">
+  <link rel="canonical" href="http://yoursite.com/2019/12/18/computer-networking-a-top-down-approach-03/">
 
 
 
 
 
-  <title>js中的数字 | 敝舍</title>
+  <title>计算机网络：自顶向下方法读书笔记（三） | 敝舍</title>
   
 
 
@@ -233,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/11/js-number/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/18/computer-networking-a-top-down-approach-03/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mett Li">
@@ -250,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">js中的数字</h1>
+          <h1 class="post-title" itemprop="name headline">计算机网络：自顶向下方法读书笔记（三）</h1>
         
 
         <div class="post-meta">
@@ -262,8 +262,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-11T16:10:31+08:00">
-                2019-09-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-18T10:05:24+08:00">
+                2019-12-18
               </time>
             
 
@@ -300,12 +300,18 @@
       
 
       
-        <p>这篇文章是在刷LeetCode中第29题: <a href="https://leetcode-cn.com/problems/divide-two-integers/submissions/" target="_blank" rel="noopener">两数相除</a>时想到的。</p>
-<h2 id="js中的数字"><a href="#js中的数字" class="headerlink" title="js中的数字"></a>js中的数字</h2><p>js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。</p>
-<h2 id="题目思路"><a href="#题目思路" class="headerlink" title="题目思路"></a>题目思路</h2><p>由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。</p>
-<h2 id="代码编写"><a href="#代码编写" class="headerlink" title="代码编写"></a>代码编写</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;number&#125; dividend</span></span><br><span class="line"><span class="comment"> * @param &#123;number&#125; divisor</span></span><br><span class="line"><span class="comment"> * @return &#123;number&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> divide = <span class="function"><span class="keyword">function</span>(<span class="params">dividend, divisor</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(dividend === <span class="number">0</span> || divisor === <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> isPositive = !(dividend &lt; <span class="number">0</span> ^ divisor &lt; <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">let</span> ans = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    dividend = <span class="built_in">Math</span>.abs(dividend);</span><br><span class="line">    divisor = <span class="built_in">Math</span>.abs(divisor);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(dividend &gt;= divisor) &#123;</span><br><span class="line">        <span class="comment">// 重置除数</span></span><br><span class="line">        <span class="keyword">let</span> tempDivisor = divisor;</span><br><span class="line">        <span class="keyword">let</span> count = <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// js存放的都是32位有符号整数，因此最大二进制数只能是2147483648</span></span><br><span class="line">        <span class="comment">// 移位不仅可能导致上溢，还有可能导致下溢，所以要对tempDivisor进行界定</span></span><br><span class="line">        <span class="keyword">while</span>(dividend &gt;= tempDivisor &amp;&amp; tempDivisor &lt;= <span class="number">2147483648</span> &amp;&amp; tempDivisor &gt;= divisor) &#123;</span><br><span class="line">            dividend -= tempDivisor;</span><br><span class="line">            ans += count;</span><br><span class="line">            tempDivisor = tempDivisor &lt;&lt; <span class="number">1</span>;</span><br><span class="line">            count = count &lt;&lt; <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ans = isPositive ? ans : -ans;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(ans &gt; <span class="number">2147483647</span> || ans &lt; <span class="number">-2147483648</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2147483647</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ans;   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
+        <p>本章详细介绍了运输层相关的知识, 从 TCP 和 UDP 运输层协议入手, 主要探讨如下两个问题：</p>
+<ul>
+<li>两个实体如何在一种会丢失或损坏数据的媒体上进行可靠通信?</li>
+<li>如何控制运输层实体的传输速率以避免网络拥塞, 以及如何从拥塞中恢复过来?</li>
+</ul>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="运输层的层级"><a href="#运输层的层级" class="headerlink" title="运输层的层级"></a>运输层的层级</h2><p>运输层介于应用层之下, 网络层之上。</p>
+<h2 id="运输层提供的功能"><a href="#运输层提供的功能" class="headerlink" title="运输层提供的功能"></a>运输层提供的功能</h2><p>运输层协议为运行在不同主机上的应用进程之间提供了<code>逻辑通信</code>功能。所谓<code>逻辑通信</code>, 是指应用进程通过运输层提供的功能进行通信, 而无需关心承载这些报文的物理基础设施细节。</p>
+<h2 id="运输层实现的位置"><a href="#运输层实现的位置" class="headerlink" title="运输层实现的位置"></a>运输层实现的位置</h2><p>运输层协议是在端系统中而非路由器中实现的。</p>
+<h2 id="运输层与网络层的区别"><a href="#运输层与网络层的区别" class="headerlink" title="运输层与网络层的区别"></a>运输层与网络层的区别</h2><p>网络层提供了主机之间的逻辑通信, 运输层提供了运行在不同主机上的应用进程之间的逻辑通信。</p>
+<h2 id="运输层分组的名称"><a href="#运输层分组的名称" class="headerlink" title="运输层分组的名称"></a>运输层分组的名称</h2><p>运输层的分组称为<code>报文段（segment）</code>。</p>
+<h1 id="多路复用与多路分解"><a href="#多路复用与多路分解" class="headerlink" title="多路复用与多路分解"></a>多路复用与多路分解</h1><p>在之前的内容中我们了解到, 在接收主机中的运输层实际上并没有直接把数据交付给进程, 而是将数据交给了一个中间套接字。每个套接字都有唯一标识符用于与其他套接字做区分。对应的, 每个运输层报文段中都会有几个字段, 用于唯一标识套接字。在接收端, 运输层检查这些字段, 标识出接收套接字, 进而将报文段定向到该套接字。<br>将运输层报文段中的数据交付到正确的套接字的工作称为<code>多路分解（demultiplexing）</code>。<br>在源主机从不同套接字中收集数据块,并未每个数据块封装上首部信息（用于以后分解）从而生成报文段, 然后将报文段传递到网络层, 所有这些工作称为<code>多路复用（multiplexing）</code>。</p>
+<h1 id="无连接运输：UDP"><a href="#无连接运输：UDP" class="headerlink" title="无连接运输：UDP"></a>无连接运输：UDP</h1><h1 id="可靠数据传输原理"><a href="#可靠数据传输原理" class="headerlink" title="可靠数据传输原理"></a>可靠数据传输原理</h1><h1 id="面向连接的运输：TCP"><a href="#面向连接的运输：TCP" class="headerlink" title="面向连接的运输：TCP"></a>面向连接的运输：TCP</h1><h1 id="拥塞控制原理"><a href="#拥塞控制原理" class="headerlink" title="拥塞控制原理"></a>拥塞控制原理</h1>
       
     </div>
     
@@ -322,9 +328,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
-          
-            <a href="/tags/js/" rel="tag"># js</a>
+            <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
           
         </div>
       
@@ -337,8 +341,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/08/14/source/" rel="next" title="资源总结帖(持续更新)">
-                <i class="fa fa-chevron-left"></i> 资源总结帖(持续更新)
+              <a href="/2019/12/17/react-components-elements-and-instances/" rel="next" title="React Components, Elements, and Instances">
+                <i class="fa fa-chevron-left"></i> React Components, Elements, and Instances
               </a>
             
           </div>
@@ -346,10 +350,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/09/12/first-100/" rel="prev" title="纪念一下">
-                纪念一下 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -472,7 +472,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#js中的数字"><span class="nav-number">1.</span> <span class="nav-text">js中的数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题目思路"><span class="nav-number">2.</span> <span class="nav-text">题目思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码编写"><span class="nav-number">3.</span> <span class="nav-text">代码编写</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#运输层的层级"><span class="nav-number">1.1.</span> <span class="nav-text">运输层的层级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运输层提供的功能"><span class="nav-number">1.2.</span> <span class="nav-text">运输层提供的功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运输层实现的位置"><span class="nav-number">1.3.</span> <span class="nav-text">运输层实现的位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运输层与网络层的区别"><span class="nav-number">1.4.</span> <span class="nav-text">运输层与网络层的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运输层分组的名称"><span class="nav-number">1.5.</span> <span class="nav-text">运输层分组的名称</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多路复用与多路分解"><span class="nav-number">2.</span> <span class="nav-text">多路复用与多路分解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无连接运输：UDP"><span class="nav-number">3.</span> <span class="nav-text">无连接运输：UDP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#可靠数据传输原理"><span class="nav-number">4.</span> <span class="nav-text">可靠数据传输原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#面向连接的运输：TCP"><span class="nav-number">5.</span> <span class="nav-text">面向连接的运输：TCP</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拥塞控制原理"><span class="nav-number">6.</span> <span class="nav-text">拥塞控制原理</span></a></li></ol></div>
             
 
           </div>
