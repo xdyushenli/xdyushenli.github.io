@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 代码编写12345678910">
+<meta name="description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 0.1. js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 0.2. 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 0.3.">
 <meta name="keywords" content="LeetCode,js">
 <meta property="og:type" content="article">
 <meta property="og:title" content="js中的数字">
 <meta property="og:url" content="http://yoursite.com/2019/09/11/js-number/index.html">
 <meta property="og:site_name" content="敝舍">
-<meta property="og:description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 代码编写12345678910">
+<meta property="og:description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 0.1. js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 0.2. 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 0.3.">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2019-09-12T11:29:33.727Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js中的数字">
-<meta name="twitter:description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 代码编写12345678910">
+<meta name="twitter:description" content="这篇文章是在刷LeetCode中第29题: 两数相除时想到的。 0.1. js中的数字js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。 0.2. 题目思路由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。 0.3.">
 
 
 
@@ -301,9 +301,9 @@
 
       
         <p>这篇文章是在刷LeetCode中第29题: <a href="https://leetcode-cn.com/problems/divide-two-integers/submissions/" target="_blank" rel="noopener">两数相除</a>时想到的。</p>
-<h2 id="js中的数字"><a href="#js中的数字" class="headerlink" title="js中的数字"></a>js中的数字</h2><p>js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。</p>
-<h2 id="题目思路"><a href="#题目思路" class="headerlink" title="题目思路"></a>题目思路</h2><p>由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。</p>
-<h2 id="代码编写"><a href="#代码编写" class="headerlink" title="代码编写"></a>代码编写</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;number&#125; dividend</span></span><br><span class="line"><span class="comment"> * @param &#123;number&#125; divisor</span></span><br><span class="line"><span class="comment"> * @return &#123;number&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> divide = <span class="function"><span class="keyword">function</span>(<span class="params">dividend, divisor</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(dividend === <span class="number">0</span> || divisor === <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> isPositive = !(dividend &lt; <span class="number">0</span> ^ divisor &lt; <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">let</span> ans = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    dividend = <span class="built_in">Math</span>.abs(dividend);</span><br><span class="line">    divisor = <span class="built_in">Math</span>.abs(divisor);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(dividend &gt;= divisor) &#123;</span><br><span class="line">        <span class="comment">// 重置除数</span></span><br><span class="line">        <span class="keyword">let</span> tempDivisor = divisor;</span><br><span class="line">        <span class="keyword">let</span> count = <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// js存放的都是32位有符号整数，因此最大二进制数只能是2147483648</span></span><br><span class="line">        <span class="comment">// 移位不仅可能导致上溢，还有可能导致下溢，所以要对tempDivisor进行界定</span></span><br><span class="line">        <span class="keyword">while</span>(dividend &gt;= tempDivisor &amp;&amp; tempDivisor &lt;= <span class="number">2147483648</span> &amp;&amp; tempDivisor &gt;= divisor) &#123;</span><br><span class="line">            dividend -= tempDivisor;</span><br><span class="line">            ans += count;</span><br><span class="line">            tempDivisor = tempDivisor &lt;&lt; <span class="number">1</span>;</span><br><span class="line">            count = count &lt;&lt; <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ans = isPositive ? ans : -ans;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(ans &gt; <span class="number">2147483647</span> || ans &lt; <span class="number">-2147483648</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2147483647</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ans;   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="js中的数字">0.1. js中的数字</h2><p>js中所有的数字都是以32位有符号数进行存储的。因此在进行移位运算时应该格外小心，一不小心就会溢出造成奇奇怪怪的结果。</p>
+<h2 id="题目思路">0.2. 题目思路</h2><p>由于题干中不允许使用乘除法和取余运算，因此就只能用加减法来进行除法运算。但是商一次加一太耗费时间，因此对除数进行移位运算，呈指数级增长，可以大大缩短运算所需的时间。</p>
+<h2 id="代码编写">0.3. 代码编写</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @param &#123;number&#125; dividend</span></span><br><span class="line"><span class="comment"> * @param &#123;number&#125; divisor</span></span><br><span class="line"><span class="comment"> * @return &#123;number&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">var</span> divide = <span class="function"><span class="keyword">function</span>(<span class="params">dividend, divisor</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(dividend === <span class="number">0</span> || divisor === <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> isPositive = !(dividend &lt; <span class="number">0</span> ^ divisor &lt; <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">let</span> ans = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    dividend = <span class="built_in">Math</span>.abs(dividend);</span><br><span class="line">    divisor = <span class="built_in">Math</span>.abs(divisor);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">while</span>(dividend &gt;= divisor) &#123;</span><br><span class="line">        <span class="comment">// 重置除数</span></span><br><span class="line">        <span class="keyword">let</span> tempDivisor = divisor;</span><br><span class="line">        <span class="keyword">let</span> count = <span class="number">1</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// js存放的都是32位有符号整数，因此最大二进制数只能是2147483648</span></span><br><span class="line">        <span class="comment">// 移位不仅可能导致上溢，还有可能导致下溢，所以要对tempDivisor进行界定</span></span><br><span class="line">        <span class="keyword">while</span>(dividend &gt;= tempDivisor &amp;&amp; tempDivisor &lt;= <span class="number">2147483648</span> &amp;&amp; tempDivisor &gt;= divisor) &#123;</span><br><span class="line">            dividend -= tempDivisor;</span><br><span class="line">            ans += count;</span><br><span class="line">            tempDivisor = tempDivisor &lt;&lt; <span class="number">1</span>;</span><br><span class="line">            count = count &lt;&lt; <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ans = isPositive ? ans : -ans;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(ans &gt; <span class="number">2147483647</span> || ans &lt; <span class="number">-2147483648</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">2147483647</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ans;   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 
       
@@ -426,7 +426,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -439,7 +439,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -472,7 +472,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#js中的数字"><span class="nav-number">1.</span> <span class="nav-text">js中的数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题目思路"><span class="nav-number">2.</span> <span class="nav-text">题目思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码编写"><span class="nav-number">3.</span> <span class="nav-text">代码编写</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#js中的数字"><span class="nav-text">0.1. js中的数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#题目思路"><span class="nav-text">0.2. 题目思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码编写"><span class="nav-text">0.3. 代码编写</span></a></li></ol></div>
             
 
           </div>
@@ -492,7 +492,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
