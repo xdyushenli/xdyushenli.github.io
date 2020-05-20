@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="计算机网络,IP,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本章我们来到了网络层。与运输层不同, 网络层存在于处在网络内部的每一台主机和路由器上。网络层比较复杂, 可以分为两个相互独立但共同作用的部分: 数据平面和控制平面。其基础协议是 IP 协议。本章主要涉及网络层数据平面的相关知识。本章主要回答下面这些问题:  网络层数据平面的功能是什么? 路由器是如何实现网络层数据平面的功能的? 传统的基于 IP 的转发是如何实现的? 更为一般的转发是如何实现的?">
+<meta name="keywords" content="计算机网络,IP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络：自顶向下方法读书笔记（四）">
+<meta property="og:url" content="http://yoursite.com/2019/12/18/computer-networking-a-top-down-approach-04/index.html">
+<meta property="og:site_name" content="敝舍">
+<meta property="og:description" content="本章我们来到了网络层。与运输层不同, 网络层存在于处在网络内部的每一台主机和路由器上。网络层比较复杂, 可以分为两个相互独立但共同作用的部分: 数据平面和控制平面。其基础协议是 IP 协议。本章主要涉及网络层数据平面的相关知识。本章主要回答下面这些问题:  网络层数据平面的功能是什么? 路由器是如何实现网络层数据平面的功能的? 传统的基于 IP 的转发是如何实现的? 更为一般的转发是如何实现的?">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-05-20T15:22:53.871Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="计算机网络：自顶向下方法读书笔记（四）">
+<meta name="twitter:description" content="本章我们来到了网络层。与运输层不同, 网络层存在于处在网络内部的每一台主机和路由器上。网络层比较复杂, 可以分为两个相互独立但共同作用的部分: 数据平面和控制平面。其基础协议是 IP 协议。本章主要涉及网络层数据平面的相关知识。本章主要回答下面这些问题:  网络层数据平面的功能是什么? 路由器是如何实现网络层数据平面的功能的? 传统的基于 IP 的转发是如何实现的? 更为一般的转发是如何实现的?">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/18/computer-networking-a-top-down-approach-04/">
+
+
+
+
+
+  <title>计算机网络：自顶向下方法读书笔记（四） | 敝舍</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">敝舍</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/18/computer-networking-a-top-down-approach-04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mett Li">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="敝舍">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络：自顶向下方法读书笔记（四）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-18T20:01:09+08:00">
+                2019-12-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本章我们来到了网络层。与运输层不同, 网络层存在于处在网络内部的每一台主机和路由器上。<br>网络层比较复杂, 可以分为两个相互独立但共同作用的部分: <strong>数据平面</strong>和<strong>控制平面</strong>。其基础协议是 IP 协议。本章主要涉及<strong>网络层数据平面的相关知识。</strong><br>本章主要回答下面这些问题:</p>
+<ul>
+<li>网络层数据平面的功能是什么?</li>
+<li>路由器是如何实现网络层数据平面的功能的?</li>
+<li>传统的基于 IP 的转发是如何实现的?</li>
+<li>更为一般的转发是如何实现的?</li>
+</ul>
+<h1 id="网络层概述">1. 网络层概述</h1><p>我们将网络层使用的包称为<code>数据报(datagram)</code>。</p>
+<p>网络层数据平面与控制平面的功能:</p>
+<ul>
+<li>数据平面的功能: 转发。</li>
+<li>控制平面的功能: 控制向哪里转发。这个功能还有一个高大上的名字, 叫路由选择。</li>
+</ul>
+<p><code>转发(forwarding)</code>和<code>路由选择(routing)</code>之间的区别是:</p>
+<ul>
+<li><strong>转发</strong>指的是将一个数据报从一个链路转发到另一个链路的动作, 时间多为几纳秒, 通常用硬件来实现。</li>
+<li><strong>路由选择</strong>是指确定数据报从发送端到接收端的路径的处理过程, 时间多为几秒, 通常用软件来实现。</li>
+</ul>
+<p>为了实现控制平面的功能, 需要在路由器中存放一个<code>转发表(forwarding table)</code>。转发表会告知路由器具有特定首部值的数据报应该向哪条链路进行转发。</p>
+<p>转发表一般有两种定义方式:</p>
+<ul>
+<li>路由器与路由器之间通过路由选择协议交换包含路由信息的报文, 从而生成转发表。<br>在这种方式中, 路由器既实现了数据平面的功能, 也实现了控制平面的功能。</li>
+<li>远程控制器计算转发表, 并向路由器进行分发。远程控制器存放在数据中心中, 由第三方或 ISP 进行管理。<br>通过这种方式, 路由器和远程控制器一起, 构成了一个实现了网络层所有功能的网络。由于这种网络的行为是通过远程控制器中的软件计算出来的, 因此将这样的网络称为<code>软件定义(的)网络(SDN, Software-Defined Networking)</code>。<br>在这种方式中, 路由器仅实现了数据平面的功能, 控制平面的功能由远程控制器实现。</li>
+</ul>
+<p><strong>网络层提供的是尽力而为的服务(best-effort service)。</strong>也就是说, 网络层不对数据报正确交付做任何承诺!</p>
+<h1 id="路由器工作原理">2. 路由器工作原理</h1><p>本节主要回答了路由器是如何将数据报从入链路转发到合适的出链路的。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/计算机网络/" rel="tag"># 计算机网络</a>
+          
+            <a href="/tags/IP/" rel="tag"># IP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/12/18/computer-networking-a-top-down-approach-03/" rel="next" title="计算机网络：自顶向下方法读书笔记（三）">
+                <i class="fa fa-chevron-left"></i> 计算机网络：自顶向下方法读书笔记（三）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/16/sorting-algorithm/" rel="prev" title="十大经典的排序算法">
+                十大经典的排序算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Mett Li</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#网络层概述"><span class="nav-text">1. 网络层概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#路由器工作原理"><span class="nav-text">2. 路由器工作原理</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mett Li</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

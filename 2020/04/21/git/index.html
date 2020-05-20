@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="git,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. 前言本文不是入门教程，阅读本文需要对 git 有一定基础的了解。 2. git 是什么？git 是一种分布式版本控制软件。 3. 为什么我们需要 git？在团队协作开发时，常常需要对代码进行管理，不同的人可能负责不同的部分，每个人都能对代码进行修改。因此我们需要一种工具，帮助我们来进行代码管理工作，例如合并不同人写的代码、为每次修改加上说明信息等。这个时候，就需要 git 出马了。 4. g">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="git 不完全指北">
+<meta property="og:url" content="http://yoursite.com/2020/04/21/git/index.html">
+<meta property="og:site_name" content="敝舍">
+<meta property="og:description" content="1. 前言本文不是入门教程，阅读本文需要对 git 有一定基础的了解。 2. git 是什么？git 是一种分布式版本控制软件。 3. 为什么我们需要 git？在团队协作开发时，常常需要对代码进行管理，不同的人可能负责不同的部分，每个人都能对代码进行修改。因此我们需要一种工具，帮助我们来进行代码管理工作，例如合并不同人写的代码、为每次修改加上说明信息等。这个时候，就需要 git 出马了。 4. g">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/git/2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/git/3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/git/1.PNG">
+<meta property="og:updated_time" content="2020-05-06T15:02:45.749Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="git 不完全指北">
+<meta name="twitter:description" content="1. 前言本文不是入门教程，阅读本文需要对 git 有一定基础的了解。 2. git 是什么？git 是一种分布式版本控制软件。 3. 为什么我们需要 git？在团队协作开发时，常常需要对代码进行管理，不同的人可能负责不同的部分，每个人都能对代码进行修改。因此我们需要一种工具，帮助我们来进行代码管理工作，例如合并不同人写的代码、为每次修改加上说明信息等。这个时候，就需要 git 出马了。 4. g">
+<meta name="twitter:image" content="http://yoursite.com/images/git/2.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/04/21/git/">
+
+
+
+
+
+  <title>git 不完全指北 | 敝舍</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">敝舍</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/04/21/git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mett Li">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="敝舍">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">git 不完全指北</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-04-21T08:13:51+08:00">
+                2020-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言">1. 前言</h1><p>本文不是入门教程，阅读本文需要对 git 有一定基础的了解。</p>
+<h1 id="git-是什么？">2. git 是什么？</h1><p>git 是一种分布式版本控制软件。</p>
+<h1 id="为什么我们需要-git？">3. 为什么我们需要 git？</h1><p>在团队协作开发时，常常需要对代码进行管理，不同的人可能负责不同的部分，每个人都能对代码进行修改。因此我们需要一种工具，帮助我们来进行代码管理工作，例如合并不同人写的代码、为每次修改加上说明信息等。<br>这个时候，就需要 git 出马了。</p>
+<h1 id="git-基础知识">4. git 基础知识</h1><h2 id="git-中的文件状态">4.1. git 中的文件状态</h2><p>在 git 中，文件有四种状态。分别为：</p>
+<ul>
+<li><code>untracked</code>: 未跟踪状态。</li>
+<li><code>unmodified</code>: 未修改状态。</li>
+<li><code>modified</code>: 已修改状态。</li>
+<li><code>staged</code>: 已存储状态。</li>
+</ul>
+<p>四种状态之间的变化关系如下所示：</p>
+<p><img src="/images/git/2.jpg" alt="git 中的文件状态"></p>
+<h2 id="git-工作区、暂存区和版本库">4.2. git 工作区、暂存区和版本库</h2><p>首先来理解这三个概念：</p>
+<ul>
+<li><code>工作区</code>：电脑中存在的、能看到的目录。</li>
+<li><code>暂存区</code>：用于存放已经修改但尚未提交到仓库的文件，<strong>git add</strong>之后的文件会放在这里。一般存放在 <code>.git</code> 目录下的 <code>index</code> 文件中。</li>
+<li><code>版本库</code>：在这里存放着已经提交到仓库的文件以及仓库的各种信息，<strong>git commit</strong>之后的文件会放在这里。在文件系统上表现为为 <code>.git</code> 隐藏目录。</li>
+</ul>
+<p>下图为工作区、暂存区和版本库的变化关系：</p>
+<p><img src="/images/git/3.jpg" alt="git 中工作区、暂存区和版本库的关系"></p>
+<h2 id="自定义命令">4.3. 自定义命令</h2><p>git 中某些命令比较长，书写起来既容易出错，也很不方便。对于这个问题，我们可以通过指定命令别名来解决。<br>方法是修改 <code>.gitconfig</code> 文件的 <code>alias</code> 子命令，具体语法如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[alias]</span><br><span class="line">    st = staus</span><br><span class="line">    l = log</span><br><span class="line">    # ...</span><br></pre></td></tr></table></figure>
+
+<p><code>alias</code> 的意思为<code>别名，化名</code>。在上面的文件中，我们指定了 <strong>git st</strong> 即为 <strong>git status</strong>，<strong>git l</strong> 即为 <strong>git log</strong>。</p>
+<h1 id="git-常用命令及详解">5. git 常用命令及详解</h1><h2 id="git-init">5.1. git init</h2><p>初始化 git 仓库。</p>
+<h2 id="git-status">5.2. git status</h2><p>查看当前仓库的信息，如文件状态、暂存区中存储了哪些文件等。</p>
+<h2 id="git-add-lt-单个文件名-gt">5.3. git add &lt;单个文件名 | .&gt;</h2><p>将文件添加到暂存区。</p>
+<h2 id="git-commit-m-lt-message-gt">5.4. git commit -m &lt;message&gt;</h2><p>将暂存区中的文件提交到仓库。</p>
+<h2 id="git-log">5.5. git log</h2><p>查看<strong>当前分支</strong>的提交记录，可以看到什么人在什么时间提交了，并留下了哪些信息，还能查看每个 <code>commit</code> 对应的唯一哈希值。<br><strong>注意，虽然每个 commit ID 都很长，但是只需要前 7 位就能确定是哪一个 commit 了。</strong></p>
+<h2 id="git-reflog">5.6. git reflog</h2><p>查看所有的操作记录，这个命令常常用于回滚代码版本。</p>
+<h2 id="git-branch">5.7. git branch</h2><p>查看所有分支。</p>
+<h2 id="git-clone-lt-远程仓库链接-gt">5.8. git clone &lt;远程仓库链接&gt;</h2><p>将远程仓库克隆到本地。</p>
+<h2 id="git-push-lt-远程仓库链接-gt-lt-branchName-gt">5.9. git push &lt;远程仓库链接&gt; &lt;branchName&gt;</h2><p>将本地内容提交到远程仓库。其中，远程仓库链接常常用别名代替，比如 <code>origin</code>。<br><strong>另外，&lt;branchName&gt; 参数可以省略，其默认为当前分支名。</strong></p>
+<h2 id="git-checkout">5.10. git checkout</h2><ul>
+<li><strong>git checkout &lt;branchName&gt;</strong>：切换分支。</li>
+<li><strong>git checkout -b &lt;branchName&gt; &lt;template&gt;</strong>：创建并切换到新分支。创建时可以指定分支名字并指定某个已存在分支作为模板。<br>其中，<code>&lt;template&gt;</code> 参数默认以当前分支为模板，<strong>且新建的分支会继承原有分支的 commit 记录。</strong></li>
+<li><strong>git checkout -b &lt;branchName&gt; origin &lt;template&gt;</strong>：以远程仓库中的某个分支作为模板，来新建本地分支。</li>
+</ul>
+<h2 id="git-reset">5.11. git reset</h2><ul>
+<li><strong>git reset &lt;文件名&gt;</strong>：将文件从暂存区中删除。</li>
+<li><strong>git reset &lt;commit-id&gt; &lt;参数&gt;</strong>：回退到之前某次 <code>commit</code> 的状态。<br>参数列表：<ul>
+<li><code>--hard</code>：所有更改均不保存。</li>
+<li><code>--soft</code>：保留处于 <code>staged</code> 状态的更改。</li>
+<li><code>--mixed</code>：保留处于 <code>modified</code> 状态的更改，<strong>该参数为默认参数</strong>。</li>
+</ul>
+</li>
+</ul>
+<h2 id="git-fetch">5.12. git fetch</h2><p>拉取远程仓库的信息，如分支等。使用了这个命令之后，才可以切换到远程仓库的一些分支。</p>
+<h2 id="git-merge-lt-branchName-gt">5.13. git merge &lt;branchName&gt;</h2><p><strong>git merge &lt;branchName&gt;</strong> 会将某个分支的 <code>commit</code> 合并到当前分支。<strong>这里需要注意合并的是 <code>commit</code>，不会合并未提交的内容。</strong><br>在 <code>git merge</code> 时，被合并分支可能会与当前分支产生冲突，所以要解决冲突。<br>在 <code>git merge</code> 完成后，会自动在当前分支增添一条 <code>commit</code> 记录。这条记录与被合并的 <code>commit</code> 对应的记录一致。</p>
+<h2 id="git-pull">5.14. git pull</h2><p>该命令的作用是拉取某个分支的最新版本并自动与本地版本进行 <code>merge</code>，相当于 <code>fetch + merge</code>。</p>
+<ul>
+<li><strong>git pull &lt;远程主机名&gt; &lt;远程分支名&gt;:&lt;本地分支名&gt;</strong>：拉取远程特定分支，并与本地某个分支合并的命令。</li>
+<li><strong>git pull &lt;远程主机名&gt; &lt;远程分支名&gt;</strong>：如果是与当前分支合并的话，本地分支名可以省略。</li>
+</ul>
+<h2 id="git-remote">5.15. git remote</h2><ul>
+<li><strong>git remote</strong>：查看当前仓库的简写。</li>
+<li><strong>git remote add &lt;shortname&gt; &lt;url&gt;</strong>：添加远程仓库，并指定简写名称。</li>
+</ul>
+<h2 id="git-rebase-lt-branchName-gt">5.16. git rebase &lt;branchName&gt;</h2><p><strong>git rebase</strong> 命令最好的翻译是<strong>变基</strong>，这里的<strong>变基</strong>指的是<strong>改变基础</strong>。<strong>简单来说，git rebase 的作用是重新排列 <code>commit</code>。</strong><br>这么说可能有点抽象，我们来考虑以下场景：</p>
+<p><img src="/images/git/1.PNG" alt="git 中工作区、暂存区和版本库的关系"></p>
+<p>我们需要将新分支切换为以最新的 <code>master</code> 为模板生成的分支，这个时候可以在 <code>bc</code> 分支上执行 <strong>git rebase master</strong> 命令。<br>但这并不算完，因为可以看到，我们在 <code>bc</code> 分支还有两次提交，分别是 <code>commit 3</code>、<code>commit 4</code>。<br>第一次执行 <strong>git rebase master</strong> 后，我们需要处理冲突，合并 <code>commit 5</code>（<code>master</code> 分支最新的 <code>commit</code>）和<code>commit 3</code>（<code>bc</code> 分支在创建后的第一次 <code>commit</code>）。<br>之后需要不断合并，直到所有在 <code>bc</code> 分支创建后的 <code>commit</code> 都已被成功合并。<br>在合并下一个 <code>commit</code> 时，我们的命令会发生一点变化，不需要每次都加上 <code>master</code> 了，只需要加上 <code>--continue</code> 参数就好：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git rebase --continue</span><br></pre></td></tr></table></figure>
+
+<h2 id="git-cherry-pick-lt-commit-id-gt">5.17. git cherry-pick &lt;commit-id&gt;</h2><p>关于这个命令，最恰当的翻译为<strong>拣选</strong>。用于将其他分支上的、单个 <code>commit</code> 修改，移植到当前的分支。<br>一个很常见的场景就是：想在某个稳定版本上，添加一个刚开发完成的版本中的功能。这时就可以使用 <strong>git cherry-pick</strong> 命令，将这个功能相关的 <code>commit</code> 提取出来，合入稳定版本的分支上。</p>
+<h2 id="git-stash">5.18. git stash</h2><p>考虑这样一个场景：你在修改一个文件，修改到一半，决定回滚到上一次 <code>commit</code> 的版本。这时你首先想到的命令肯定是 <strong>git reset</strong>。但是这些修改全部丢弃掉又有点可惜，你决定将这些修改存储起来，以便下次还可以使用这些修改。存储这些修改所用的命令就是 <strong>git stash</strong>。<br><strong>git stash</strong> 的本质是一个堆栈，只不过里面存储的是文件的修改情况。一个本地文件的更改被储藏时，被修改文件会恢复原样。等要恢复更改时，可以使用 <strong>git stash pop</strong>，把更改应用于文件。<br>简单来说，<strong>git stash</strong> 储藏更改，并去除相关文件中的更改，<strong>git stash pop</strong>恢复更改，并删除储藏堆栈中的更改。</p>
+<p>下面是关于 <strong>git stash</strong> 命令的详解：</p>
+<ul>
+<li><strong>git stash</strong>：保存当前的工作进度。会分别对暂存区和工作区的状态进行保存。</li>
+<li><strong>git stash save &lt;message&gt;</strong>：保存当前工作进度，并为此次保存添加一些说明。这条命令实际上是第一条 <strong>git stash</strong> 命令的完整版。</li>
+<li><strong>git stash list</strong>：显示保存所有进度的列表。此命令显然暗示了 <strong>git stash</strong> 可以多次保存工作进度，并用在恢复时候进行选择。</li>
+<li><strong>git stash pop [–index] [&lt;stash-id&gt;]</strong>：<br>如果不使用任何参数，会恢复最新保存的工作进度（<strong>仅工作区！</strong>），并将恢复的工作进度从存储的工作进度列表中清除。<br>如果提供 <code>stash-id</code> 参数（来自 <strong>git stash list</strong> 提供的信息），则会恢复 <code>stash-id</code> 对应的进度。恢复完毕也将从进度列表中删除对应进度。<br>如果提供 <code>--index</code> 参数，则除了恢复工作区的文件外，还会尝试恢复暂存区。<br>两个参数能同时使用。</li>
+<li><strong>git stash apply [–index] [&lt;stash-id&gt;]</strong>：除了不删除恢复的进度之外，其余和 <strong>git stash pop</strong> 命令一样。</li>
+<li><strong>git stash drop [&lt;stash-id&gt;]</strong>：删除一个存储的进度。如果不指定 <code>stash-id</code>，则默认删除最新的进度。</li>
+<li><strong>git stash clear</strong>：删除所有存储的进度。</li>
+</ul>
+<h1 id="总结">6. 总结</h1><p>git 中的命令还有很多，这里只涉猎了一小部分。<br>后续会结合实际工作需要，陆续添加对其他命令的说明，并在<a href="#场景应用">场景应用</a>中添加对于实际问题的解决方案。<br>另外，有个小姐姐写了一篇用动态图展示 git 命令的<a href="https://dev.to/lydiahallie/cs-visualized-useful-git-commands-37p1" target="_blank" rel="noopener">博客</a>，<del>不管是人还是博客都</del>很值得一看。</p>
+<h1 id="参考资料">7. 参考资料</h1><ul>
+<li><a href="https://www.bilibili.com/video/BV1BE411g7SV?t=51" target="_blank" rel="noopener">git 直到这些就够了</a></li>
+<li><a href="https://www.qikegu.com/docs/4379" target="_blank" rel="noopener">Git – 储藏(git stash)本地更改</a></li>
+<li><a href="https://gist.github.com/subchen/3409a16cb46327ca7691" target="_blank" rel="noopener">git stash 用于保存和恢复工作进度</a></li>
+<li><a href="http://blog.51yip.com/other/1945.html" target="_blank" rel="noopener">git stash 保存和恢复修改进度</a></li>
+</ul>
+<h1 id="场景应用">8. 场景应用</h1><h2 id="在本地新建仓库，提交代码到某个已存在的远程仓库">8.1. 在本地新建仓库，提交代码到某个已存在的远程仓库</h2><p>具体场景如下：本地新建了一个仓库，进行了一些修改工作。现在想让其与某个远程仓库建立连接，能够将代码 <code>push</code> 到远程仓库。<br>需要执行以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 设置仓库连接</span><br><span class="line">git add remote &lt;shortname&gt; &lt;远程仓库链接&gt;</span><br><span class="line"><span class="meta">#</span> 拉取远程更改，最好加上具体的远程分支名与本地分支名</span><br><span class="line">git pull &lt;远程仓库连接&gt; &lt;远程分支名&gt;</span><br></pre></td></tr></table></figure>
+
+<p>首先我们告知本地 git 应当与哪个远程仓库建立联系。<br>由于本地仓库的修改进度落后于远程仓库，因此需要拉取远程仓库的修改，与本地修改进行合并。否则会遇到如下错误：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">To https://git.coding.net/xxxx/xxx.git</span><br><span class="line"> ! [rejected]        master -&gt; master (non-fast-forward)</span><br><span class="line">error: failed to push some refs to 'https://git.coding.net/xxxx/xxx.git'</span><br><span class="line">hint: Updates were rejected because the tip of your current branch is behind</span><br><span class="line">hint: its remote counterpart. Integrate the remote changes (e.g.</span><br><span class="line">hint: 'git pull ...') before pushing again.</span><br><span class="line">hint: See the 'Note about fast-forwards' in 'git push --help' for details.</span><br></pre></td></tr></table></figure>
+
+<p>之后便可以正常执行 <code>git add</code>、<code>git commit</code>、<code>git push</code> 等命令了。</p>
+<h2 id="在远程仓库创建新分支并提交">8.2. 在远程仓库创建新分支并提交</h2><p>考虑以下场景：我们将远程仓库克隆到了本地，在本地新建了一个分支。但远程仓库中并没有这个分支，那么直接使用 <strong>git push origin</strong> 能够顺利提交吗？<br>答案是否定的。git 会提示我们当前分支缺乏上流分支：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal: The current branch &lt;branchName&gt; has no upstream branch.</span><br></pre></td></tr></table></figure>
+
+<p>这时候，我们需要在 push 的同时在远程仓库上创建一个分支，可以使用以下命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 在远程仓库中创建该分支，并将代码提交到远程仓库</span><br><span class="line">git push --set-upstream origin &lt;banchName&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="拉取远程仓库时提示本地未提交">8.3. 拉取远程仓库时提示本地未提交</h2><p>这个问题可以使用 <strong>git stash</strong> 命令来解决，分别执行下列命令：</p>
+<ol>
+<li>使用 <strong>git stash</strong> 储存本地更改</li>
+<li><strong>git pull</strong> 拉取远程更改</li>
+<li><strong>git stash pop</strong> 在应用恢复更改</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/01/16/sorting-algorithm/" rel="next" title="十大经典的排序算法">
+                <i class="fa fa-chevron-left"></i> 十大经典的排序算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/06/amusing-ourselves-to-death/" rel="prev" title="《娱乐至死》读后感">
+                《娱乐至死》读后感 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Mett Li</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-是什么？"><span class="nav-text">2. git 是什么？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么我们需要-git？"><span class="nav-text">3. 为什么我们需要 git？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-基础知识"><span class="nav-text">4. git 基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-中的文件状态"><span class="nav-text">4.1. git 中的文件状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-工作区、暂存区和版本库"><span class="nav-text">4.2. git 工作区、暂存区和版本库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义命令"><span class="nav-text">4.3. 自定义命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#git-常用命令及详解"><span class="nav-text">5. git 常用命令及详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git-init"><span class="nav-text">5.1. git init</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-status"><span class="nav-text">5.2. git status</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-add-lt-单个文件名-gt"><span class="nav-text">5.3. git add &lt;单个文件名 | .&gt;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-commit-m-lt-message-gt"><span class="nav-text">5.4. git commit -m &lt;message&gt;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-log"><span class="nav-text">5.5. git log</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-reflog"><span class="nav-text">5.6. git reflog</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-branch"><span class="nav-text">5.7. git branch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-clone-lt-远程仓库链接-gt"><span class="nav-text">5.8. git clone &lt;远程仓库链接&gt;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-push-lt-远程仓库链接-gt-lt-branchName-gt"><span class="nav-text">5.9. git push &lt;远程仓库链接&gt; &lt;branchName&gt;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-checkout"><span class="nav-text">5.10. git checkout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-reset"><span class="nav-text">5.11. git reset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-fetch"><span class="nav-text">5.12. git fetch</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-merge-lt-branchName-gt"><span class="nav-text">5.13. git merge &lt;branchName&gt;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-pull"><span class="nav-text">5.14. git pull</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-remote"><span class="nav-text">5.15. git remote</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-rebase-lt-branchName-gt"><span class="nav-text">5.16. git rebase &lt;branchName&gt;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-cherry-pick-lt-commit-id-gt"><span class="nav-text">5.17. git cherry-pick &lt;commit-id&gt;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#git-stash"><span class="nav-text">5.18. git stash</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-text">6. 总结</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">7. 参考资料</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#场景应用"><span class="nav-text">8. 场景应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在本地新建仓库，提交代码到某个已存在的远程仓库"><span class="nav-text">8.1. 在本地新建仓库，提交代码到某个已存在的远程仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在远程仓库创建新分支并提交"><span class="nav-text">8.2. 在远程仓库创建新分支并提交</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拉取远程仓库时提示本地未提交"><span class="nav-text">8.3. 拉取远程仓库时提示本地未提交</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mett Li</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
